@@ -1,0 +1,2120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>N's World! 🌟</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;900&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #FF6B35;
+      --yellow: #FFD23F;
+      --green: #06D6A0;
+      --blue: #118AB2;
+      --purple: #9B5DE5;
+      --pink: #F15BB5;
+      --red: #EF233C;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #FFF9F0;
+      overflow-x: hidden;
+    }
+
+    /* STARS BACKGROUND */
+    body::before {
+      content: '⭐✨🌟💫⭐✨🌟💫⭐✨🌟💫⭐✨🌟💫⭐✨🌟💫⭐✨🌟💫';
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      font-size: 1.2rem;
+      line-height: 2.5rem;
+      word-break: break-all;
+      opacity: 0.12;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+      background: linear-gradient(135deg, #FFD23F 0%, #FF6B35 50%, #F15BB5 100%);
+      clip-path: ellipse(100% 85% at 50% 0%);
+      padding-bottom: 5rem;
+    }
+
+    .hero-character {
+      width: clamp(130px, 28vw, 210px);
+      display: block;
+      margin: 0.8rem auto 0.5rem;
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.28));
+      animation: bounce 1.8s ease-in-out infinite;
+    }
+
+    .hero h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(3rem, 10vw, 6rem);
+      color: white;
+      text-shadow: 4px 4px 0 #FF6B35, 8px 8px 0 rgba(0,0,0,0.15);
+      animation: bounce 1.5s infinite;
+      letter-spacing: 2px;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .hero .tagline {
+      font-size: clamp(1.2rem, 4vw, 1.8rem);
+      color: white;
+      margin-top: 0.5rem;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+    }
+
+    .hero-emojis {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      margin-top: 1rem;
+      animation: spin-slow 6s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes spin-slow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* SECTION GRID */
+    .grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1100px;
+      margin: -2rem auto 3rem;
+      padding: 0 1.5rem;
+    }
+
+    /* CARD */
+    .card {
+      border-radius: 24px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.15);
+      opacity: 0;
+      transition: opacity 0.25s;
+      border-radius: 24px;
+      pointer-events: none;
+    }
+
+    .card:hover { transform: translateY(-8px) rotate(-1deg); box-shadow: 0 16px 40px rgba(0,0,0,0.18); }
+    .card:hover::after { opacity: 1; }
+
+    .card .emoji {
+      font-size: clamp(3.5rem, 8vw, 5rem);
+      display: block;
+      margin-bottom: 0.75rem;
+      animation: wiggle 2.5s ease-in-out infinite;
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-8deg); }
+      75% { transform: rotate(8deg); }
+    }
+
+    .card h2 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1.6rem, 4vw, 2rem);
+      color: white;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+      color: rgba(255,255,255,0.92);
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    /* CARD COLORS */
+    .card-cats    { background: linear-gradient(135deg, #F15BB5, #9B5DE5); }
+    .card-capybara { background: linear-gradient(135deg, #06D6A0, #118AB2); }
+    .card-bike    { background: linear-gradient(135deg, #FF6B35, #FFD23F); }
+    .card-ninja   { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+    .card-ninja h2, .card-ninja p { color: #FFD23F; }
+    .card-crunch  { background: linear-gradient(135deg, #118AB2, #06D6A0); }
+    .card-lol     { background: linear-gradient(135deg, #FFD23F, #FF6B35); }
+    .card-sister  { background: linear-gradient(135deg, #F15BB5, #FFD23F); }
+
+    /* FUN FACTS BANNER */
+    .banner {
+      position: relative;
+      z-index: 1;
+      background: var(--purple);
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      overflow: hidden;
+    }
+
+    .banner-inner {
+      display: inline-block;
+      white-space: nowrap;
+      animation: marquee 18s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(100vw); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* NINJA CHALLENGE SECTION */
+    .ninja-challenge {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+      padding: 0 1.5rem;
+      text-align: center;
+    }
+
+    .ninja-challenge h2 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      color: #1a1a2e;
+      margin-bottom: 1rem;
+    }
+
+    .challenge-box {
+      background: #1a1a2e;
+      border-radius: 20px;
+      padding: 2rem;
+      border: 4px solid #FFD23F;
+      box-shadow: 0 0 30px rgba(255, 210, 63, 0.4);
+    }
+
+    .challenge-text {
+      font-size: clamp(1.2rem, 3vw, 1.5rem);
+      color: #FFD23F;
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+    }
+
+    .challenge-btn {
+      background: #FFD23F;
+      color: #1a1a2e;
+      border: none;
+      border-radius: 50px;
+      padding: 0.9rem 2.5rem;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 6px 0 #b8970a;
+    }
+
+    .challenge-btn:hover { transform: translateY(-3px); box-shadow: 0 9px 0 #b8970a; }
+    .challenge-btn:active { transform: translateY(3px); box-shadow: 0 3px 0 #b8970a; }
+
+    #challenge-result {
+      margin-top: 1.2rem;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: #06D6A0;
+      font-weight: 900;
+      min-height: 2rem;
+    }
+
+    /* CAT FACTS */
+    .cat-section {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+      padding: 0 1.5rem;
+      text-align: center;
+    }
+
+    .cat-section h2 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      color: var(--purple);
+      margin-bottom: 1rem;
+    }
+
+    .cat-fact-box {
+      background: linear-gradient(135deg, #F15BB5, #9B5DE5);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 8px 30px rgba(155, 93, 229, 0.3);
+    }
+
+    .cat-fact-text {
+      font-size: clamp(1.1rem, 2.8vw, 1.4rem);
+      color: white;
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+    }
+
+    .cat-btn {
+      background: white;
+      color: var(--purple);
+      border: none;
+      border-radius: 50px;
+      padding: 0.9rem 2.5rem;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: transform 0.2s;
+      box-shadow: 0 6px 0 #7a3dc0;
+    }
+
+    .cat-btn:hover { transform: translateY(-3px); }
+    .cat-btn:active { transform: translateY(3px); }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      z-index: 1;
+      background: linear-gradient(135deg, #FF6B35, #F15BB5);
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: white;
+    }
+
+    footer h3 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      margin-bottom: 0.5rem;
+    }
+
+    footer p {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      font-weight: 700;
+      opacity: 0.9;
+    }
+
+    .hearts {
+      font-size: 2rem;
+      animation: pulse 1s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
+    /* FLOATING DECORATIONS */
+    .floater {
+      position: fixed;
+      font-size: 2rem;
+      pointer-events: none;
+      z-index: 999;
+      animation: float-up 4s ease-in forwards;
+    }
+
+    @keyframes float-up {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* CAPYBARA FUN */
+    .capy-box {
+      background: linear-gradient(135deg, #06D6A0, #118AB2);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 8px 30px rgba(6, 214, 160, 0.3);
+    }
+
+    .capy-fact-text {
+      font-size: clamp(1.1rem, 2.8vw, 1.4rem);
+      color: white;
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+    }
+
+    .capy-btn {
+      background: white;
+      color: #118AB2;
+      border: none;
+      border-radius: 50px;
+      padding: 0.9rem 2.5rem;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: transform 0.2s;
+      box-shadow: 0 6px 0 #0a5f7a;
+    }
+
+    .capy-btn:hover { transform: translateY(-3px); }
+
+    .dual-section {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto 3rem;
+      padding: 0 1.5rem;
+    }
+
+    .dual-section h2 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      margin-bottom: 1rem;
+    }
+
+    .dual-section .col { text-align: center; }
+    .dual-section .col.cats h2 { color: var(--purple); }
+    .dual-section .col.capy h2 { color: #118AB2; }
+
+    /* BIKE GAME */
+    .game-section {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      margin: 0 auto 3rem;
+      padding: 0 1rem;
+      text-align: center;
+    }
+    .game-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      color: var(--orange);
+      margin-bottom: 0.4rem;
+    }
+    .game-sub {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+    .game-wrap {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      border: 4px solid #FFD23F;
+      background: #111;
+    }
+    #gameCanvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      cursor: pointer;
+    }
+    /* WORD GAME */
+    .wg-section {
+      position: relative; z-index: 1;
+      max-width: 720px; margin: 0 auto 3rem; padding: 0 1.5rem;
+      text-align: center;
+    }
+    .wg-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      color: #9B5DE5; margin-bottom: 0.4rem;
+    }
+    .wg-screen {
+      background: linear-gradient(160deg, #120824, #071830);
+      border-radius: 22px; padding: 1.5rem 1.2rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+      border: 3px solid #9B5DE5;
+    }
+    .wg-bubble {
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 50%; cursor: pointer;
+      font-family: 'Fredoka One', cursive; color: white;
+      text-shadow: 1px 2px 4px rgba(0,0,0,0.4);
+      transition: transform 0.15s, box-shadow 0.15s;
+      user-select: none; -webkit-user-select: none;
+      margin: 0.55rem; line-height: 1.1; text-align: center;
+      padding: 0.5rem;
+    }
+    .wg-bubble:hover { transform: scale(1.1) !important; }
+    .wg-bubble:active { transform: scale(0.92) !important; }
+    @keyframes wg-bob1 { 0%,100%{transform:translateY(0) rotate(-1deg)} 50%{transform:translateY(-10px) rotate(1deg)} }
+    @keyframes wg-bob2 { 0%,100%{transform:translateY(0) rotate(1deg)} 50%{transform:translateY(-7px) rotate(-2deg)} }
+    @keyframes wg-bob3 { 0%,100%{transform:translateY(-4px) rotate(0)} 50%{transform:translateY(6px) rotate(2deg)} }
+    @keyframes wg-bob4 { 0%,100%{transform:translateY(2px) rotate(-2deg)} 50%{transform:translateY(-9px) rotate(1deg)} }
+    .wg-b1 { animation: wg-bob1 2.2s ease-in-out infinite; }
+    .wg-b2 { animation: wg-bob2 2.8s ease-in-out infinite 0.4s; }
+    .wg-b3 { animation: wg-bob3 2.5s ease-in-out infinite 0.8s; }
+    .wg-b4 { animation: wg-bob4 3.1s ease-in-out infinite 0.2s; }
+    @keyframes wg-pop  { 0%{transform:scale(1)} 40%{transform:scale(1.5)} 100%{transform:scale(0);opacity:0} }
+    @keyframes wg-shake{ 0%,100%{transform:translateX(0)} 20%{transform:translateX(-10px)} 40%{transform:translateX(10px)} 60%{transform:translateX(-8px)} 80%{transform:translateX(8px)} }
+    @keyframes wg-drop { 0%{transform:scale(0.5) translateY(-20px);opacity:0} 70%{transform:scale(1.08)} 100%{transform:scale(1) translateY(0);opacity:1} }
+    .wg-popping { animation: wg-pop 0.5s forwards !important; }
+    .wg-shaking { animation: wg-shake 0.45s !important; }
+    .wg-dropping { animation: wg-drop 0.4s ease-out both; }
+    .wg-lvl-btn {
+      background: none; border: none; cursor: pointer;
+      border-radius: 18px; padding: 1.2rem 1.6rem;
+      color: white; font-family: 'Nunito', sans-serif; font-weight: 900;
+      font-size: 1rem; transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 6px 0 rgba(0,0,0,0.25);
+    }
+    .wg-lvl-btn:hover { transform: translateY(-4px); box-shadow: 0 10px 0 rgba(0,0,0,0.25); }
+    .wg-lvl-btn:active { transform: translateY(2px); box-shadow: 0 3px 0 rgba(0,0,0,0.25); }
+    .wg-act-btn {
+      background: none; border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50px; padding: 0.7rem 1.6rem; color: white;
+      font-family: 'Fredoka One', cursive; font-size: 1.1rem;
+      cursor: pointer; transition: transform 0.2s, background 0.2s;
+    }
+    .wg-act-btn:hover { transform: scale(1.06); background: rgba(255,255,255,0.1); }
+    @keyframes wg-star-pop { 0%{transform:scale(0) rotate(-30deg)} 60%{transform:scale(1.3) rotate(5deg)} 100%{transform:scale(1) rotate(0)} }
+    .wg-star { display:inline-block; animation: wg-star-pop 0.5s ease-out both; }
+    /* character animations */
+    @keyframes wg-float    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    @keyframes wg-jump     { 0%{transform:translateY(0) scale(1) rotate(0)} 25%{transform:translateY(-22px) scale(1.12) rotate(-6deg)} 55%{transform:translateY(-12px) scale(1.06) rotate(5deg)} 100%{transform:translateY(0) scale(1) rotate(0)} }
+    @keyframes wg-wobble   { 0%,100%{transform:rotate(0)} 20%{transform:rotate(-12deg)} 40%{transform:rotate(12deg)} 60%{transform:rotate(-9deg)} 80%{transform:rotate(9deg)} }
+    .wg-char-idle      img { animation: wg-float  2.6s ease-in-out infinite; }
+    .wg-char-celebrate img { animation: wg-jump   0.7s ease-out both; }
+    .wg-char-wrong     img { animation: wg-wobble 0.5s ease both; }
+    /* confetti */
+    @keyframes wg-confetti { 0%{transform:rotate(0) translate(0,0);opacity:1} 100%{transform:rotate(720deg) translate(var(--tx),var(--ty));opacity:0} }
+
+    .game-hint {
+      margin-top: 0.6rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #888;
+    }
+
+    /* ── Mobile D-Pad ── */
+    #ninja-controls {
+      display: none;
+      justify-content: center;
+      margin-top: 0.8rem;
+    }
+    #ninja-dpad {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .dpad-row {
+      display: flex;
+      gap: 4px;
+    }
+    .dpad-btn {
+      width: 68px;
+      height: 68px;
+      border-radius: 14px;
+      border: 3px solid #9B5DE5;
+      background: rgba(155,93,229,0.18);
+      color: #9B5DE5;
+      font-size: 1.6rem;
+      font-weight: 900;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      transition: background 0.1s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .dpad-btn:active, .dpad-btn.pressed {
+      background: rgba(155,93,229,0.55);
+      transform: scale(0.92);
+    }
+    .dpad-center {
+      background: rgba(255,210,63,0.25);
+      border-color: #FFD23F;
+      color: #c8920a;
+      font-size: 1rem;
+      font-family: 'Fredoka One', cursive;
+      letter-spacing: 0.5px;
+    }
+    .dpad-center:active, .dpad-center.pressed {
+      background: rgba(255,210,63,0.65);
+    }
+    @media (hover: none) and (pointer: coarse) {
+      #ninja-controls { display: flex; }
+      .game-hint { display: none; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>N'S WORLD!</h1>
+    <img src="1773617334845.png" alt="N" class="hero-character" />
+    <p class="tagline">The coolest kid on the planet 🌍</p>
+    <div style="font-size:clamp(2rem,5vw,3rem); margin-top:1rem;">🐱 🐾 🚲 🥷 🔬 😂 💛</div>
+  </section>
+
+  <!-- SCROLLING BANNER -->
+  <div class="banner">
+    <span class="banner-inner">
+      🐱 CAT LOVER &nbsp;•&nbsp; 🦫 CAPYBARA FAN &nbsp;•&nbsp; 🚲 BIKE RIDER &nbsp;•&nbsp; 🥷 NINJA IN TRAINING &nbsp;•&nbsp; 🔬 CRUNCH LABS ENGINEER &nbsp;•&nbsp; 😂 LOL STORYTIME LISTENER &nbsp;•&nbsp; 💛 BEST BIG BROTHER &nbsp;•&nbsp;
+      🐱 CAT LOVER &nbsp;•&nbsp; 🦫 CAPYBARA FAN &nbsp;•&nbsp; 🚲 BIKE RIDER &nbsp;•&nbsp; 🥷 NINJA IN TRAINING &nbsp;•&nbsp; 🔬 CRUNCH LABS ENGINEER &nbsp;•&nbsp; 😂 LOL STORYTIME LISTENER &nbsp;•&nbsp; 💛 BEST BIG BROTHER &nbsp;•&nbsp;
+    </span>
+  </div>
+
+  <!-- CARDS GRID -->
+  <div class="grid">
+
+    <div class="card card-cats" onclick="spawnEmoji('🐱')">
+      <span class="emoji">🐱</span>
+      <h2>CATS!</h2>
+      <p>Soft, fuzzy, and purrfect! N loves every single cat in the whole wide world. MEOW! 🐾</p>
+    </div>
+
+    <div class="card card-capybara" onclick="spawnEmoji('🦫')">
+      <span class="emoji">🦫</span>
+      <h2>CAPYBARAS!</h2>
+      <p>The world's biggest, chillest, most awesome rodents. They're friends with EVERYONE! 🌊</p>
+    </div>
+
+    <div class="card card-bike" onclick="spawnEmoji('🚲')">
+      <span class="emoji">🚲</span>
+      <h2>BIKE RIDING!</h2>
+      <p>Zoom zoom! N goes SUPER fast on his bike. Wind in his hair, big smile on his face! 💨</p>
+    </div>
+
+    <div class="card card-ninja" onclick="spawnEmoji('🥷')">
+      <span class="emoji">🥷</span>
+      <h2>NINJA WARP WALL!</h2>
+      <p>RUN. JUMP. FLIP. N is training to conquer the warp wall like a TRUE ninja warrior! ⚡</p>
+    </div>
+
+    <div class="card card-crunch" onclick="spawnEmoji('🔬')">
+      <span class="emoji">🔬</span>
+      <h2>CRUNCH LABS!</h2>
+      <p>Build it. Break it. Learn it. N is a future engineer and scientist. SO COOL! ⚙️</p>
+      <a href="https://www.crunchlabs.com/" target="_blank" style="display:inline-block;margin-top:1rem;background:white;color:#118AB2;border-radius:50px;padding:0.5rem 1.5rem;font-family:'Fredoka One',cursive;font-size:1.1rem;text-decoration:none;box-shadow:0 4px 0 #0a5f7a;">Visit Crunch Labs! ⚙️</a>
+    </div>
+
+    <div class="card card-lol" onclick="spawnEmoji('😂')">
+      <span class="emoji">😂</span>
+      <h2>LOL STORYTIME!</h2>
+      <p>The funniest podcast ever! Stories that make you laugh until your tummy hurts! 🎙️</p>
+      <a href="https://lolstorytime.com/" target="_blank" style="display:inline-block;margin-top:1rem;background:white;color:#FF6B35;border-radius:50px;padding:0.5rem 1.5rem;font-family:'Fredoka One',cursive;font-size:1.1rem;text-decoration:none;box-shadow:0 4px 0 #b84a1f;">Listen Now! 😂</a>
+    </div>
+
+    <div class="card card-sister" onclick="spawnEmoji('💛')" style="grid-column: 1 / -1; max-width: 400px; margin: 0 auto;">
+      <span class="emoji">👧🏽</span>
+      <h2>HIS SISTER!</h2>
+      <p>The BEST sister in the universe! Together they are unstoppable! 💛💛💛</p>
+    </div>
+
+  </div>
+
+  <!-- BIKE GAME -->
+  <section class="game-section">
+    <h2 class="game-title">🚲 N'S BIKE RIDE HOME!</h2>
+    <p class="game-sub">Help N ride from the park all the way home!</p>
+    <div class="game-wrap">
+      <canvas id="gameCanvas" width="640" height="280"></canvas>
+    </div>
+    <p class="game-hint">SPACE or ↑ to jump &nbsp;|&nbsp; Double-jump too! &nbsp;|&nbsp; Click / Tap the game to jump</p>
+  </section>
+
+  <!-- CAT FACTS + CAPYBARA FACTS -->
+  <div class="dual-section">
+    <div class="col cats">
+      <h2>🐱 Cat Fact Machine!</h2>
+      <div class="cat-fact-box">
+        <p class="cat-fact-text" id="cat-fact">Cats can jump up to 6 times their own height! Imagine jumping over a house! 🏠</p>
+        <button class="cat-btn" onclick="newCatFact()">New Cat Fact! 🐱</button>
+      </div>
+    </div>
+    <div class="col capy">
+      <h2>🦫 Capybara Fact!</h2>
+      <div class="capy-box">
+        <p class="capy-fact-text" id="capy-fact">Capybaras are friends with almost every animal — birds, monkeys, turtles and even crocodiles! 🐊</p>
+        <button class="capy-btn" onclick="newCapyFact()">New Capybara Fact! 🦫</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NINJA CHALLENGE -->
+  <section class="ninja-challenge">
+    <h2>🥷 Daily Ninja Challenge!</h2>
+    <div class="challenge-box">
+      <p class="challenge-text" id="challenge-text">Are you ready, Ninja N? Hit the button to get your challenge!</p>
+      <button class="challenge-btn" onclick="newChallenge()">⚡ Get My Challenge! ⚡</button>
+      <p id="challenge-result"></p>
+    </div>
+  </section>
+
+  <!-- NINJA GAME -->
+  <section class="game-section" style="margin-top:0;">
+    <h2 class="game-title" style="color:#FFD23F; text-shadow:2px 2px 0 #000;">🥷 NINJA OBSTACLE COURSE!</h2>
+    <p class="game-sub">Dodge obstacles and hit the GREEN zone on the finish wall!</p>
+    <div class="game-wrap" style="border-color:#9B5DE5; max-width:100%; overflow:hidden;">
+      <canvas id="ninjaCanvas" width="640" height="400" style="max-width:100%;touch-action:none;"></canvas>
+    </div>
+    <p class="game-hint">Arrow keys / WASD to move &nbsp;|&nbsp; Space / Enter to select</p>
+    <!-- Mobile controls -->
+    <div id="ninja-controls">
+      <div id="ninja-dpad">
+        <button class="dpad-btn" id="nc-up"   aria-label="Up">▲</button>
+        <div class="dpad-row">
+          <button class="dpad-btn" id="nc-left"  aria-label="Left">◀</button>
+          <button class="dpad-btn dpad-center" id="nc-action" aria-label="Action">GO!</button>
+          <button class="dpad-btn" id="nc-right" aria-label="Right">▶</button>
+        </div>
+        <button class="dpad-btn" id="nc-down"  aria-label="Down">▼</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORD GAME -->
+  <section class="wg-section">
+    <h2 class="wg-title">📚 Trick Word Blaster!</h2>
+    <p style="font-weight:700;color:#666;margin-bottom:1rem;">Listen to the word, then tap the right bubble! 🫧</p>
+    <div id="wg-wrap"></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <h3>You are AMAZING, N! <span class="hearts">💛</span></h3>
+    <p>Keep riding, climbing, training, building, and laughing!</p>
+    <p style="margin-top:0.5rem; font-size:1.5rem;">🐱 🦫 🚲 🥷 🔬 😂 💛</p>
+  </footer>
+
+  <script>
+    const catFacts = [
+      "Cats can jump up to 6 times their own height! Imagine jumping over a house! 🏠",
+      "Cats have 32 muscles in each ear so they can move them like little satellite dishes! 📡",
+      "A group of cats is called a CLOWDER. How cool is that?! 🐱🐱🐱",
+      "Cats sleep 12 to 16 hours a day. Wow, that's a LOT of napping! 😴",
+      "Cats can make over 100 different sounds! Dogs can only make about 10. Cats WIN! 🏆",
+      "A cat's nose print is as unique as a human fingerprint! Every kitty is one-of-a-kind! 🐾",
+      "Cats always land on their feet because they can twist their body super fast! 🤸",
+      "Kittens can purr just 2 days after they're born. So cute! 💕",
+      "Cats dream just like people do! They probably dream about fish and running! 🐟",
+      "The oldest cat ever lived to be 38 years old! That's older than most people know! 🎂",
+    ];
+
+    const capyFacts = [
+      "Capybaras are friends with almost every animal — birds, monkeys, turtles and even crocodiles! 🐊",
+      "Capybaras love swimming and can hold their breath for up to 5 minutes! 🏊",
+      "Baby capybaras can walk just hours after being born. Instant athletes! 🏃",
+      "Capybaras communicate by clicking, barking, and whistling. They're very chatty! 📢",
+      "A group of capybaras is called a herd and they LOVE hanging out together! 🦫🦫🦫",
+      "Capybaras eat grass, fruit, and water plants — they are vegetarians! 🥦",
+      "Capybaras' teeth never stop growing, so they chew all day to keep them short! 🦷",
+      "Capybaras are the largest rodents on Earth — as big as a medium-sized dog! 🐕",
+      "Capybaras are so chill that birds often sit on their backs for a free ride! 🐦",
+      "Capybaras can run as fast as a dog — about 35 km per hour! Zoom! 💨",
+    ];
+
+    const challenges = [
+      "Do 10 jumping jacks as fast as you can! 💪",
+      "Run to a wall and back 3 times without stopping! 🏃",
+      "Balance on one foot for 15 seconds — each foot! 🦩",
+      "Do your best ninja kick move 5 times! 🥷",
+      "Crawl under a table like a secret spy agent! 🕵️",
+      "Jump as high as you can 8 times! 🚀",
+      "Do 5 push-ups! You're strong like a ninja! 💪",
+      "Spin in a circle 3 times then try to walk straight! 😵",
+      "Practice your best ninja sneak walk across the room! 🥷",
+      "Do 7 star jumps! Make yourself as big as a star! ⭐",
+      "Hold a plank for 10 seconds! Ninjas have strong cores! 🔥",
+      "Jump over an imaginary warp wall 5 times! 🏆",
+    ];
+
+    let catIndex = 0, capyIndex = 0, challengeIndex = 0;
+
+    function newCatFact() {
+      catIndex = (catIndex + 1) % catFacts.length;
+      const el = document.getElementById('cat-fact');
+      el.style.opacity = 0;
+      setTimeout(() => { el.textContent = catFacts[catIndex]; el.style.opacity = 1; }, 200);
+      el.style.transition = 'opacity 0.2s';
+      spawnEmoji('🐱');
+    }
+
+    function newCapyFact() {
+      capyIndex = (capyIndex + 1) % capyFacts.length;
+      const el = document.getElementById('capy-fact');
+      el.style.opacity = 0;
+      setTimeout(() => { el.textContent = capyFacts[capyIndex]; el.style.opacity = 1; }, 200);
+      el.style.transition = 'opacity 0.2s';
+      spawnEmoji('🦫');
+    }
+
+    function newChallenge() {
+      challengeIndex = Math.floor(Math.random() * challenges.length);
+      const el = document.getElementById('challenge-text');
+      const result = document.getElementById('challenge-result');
+      el.textContent = '⚡ ' + challenges[challengeIndex];
+      result.textContent = 'GO GO GO, NINJA N! You can do it! 🥷🔥';
+      spawnEmoji('🥷');
+      spawnEmoji('⚡');
+    }
+
+    function spawnEmoji(emoji) {
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+          const el = document.createElement('div');
+          el.className = 'floater';
+          el.textContent = emoji;
+          el.style.left = (Math.random() * 90 + 5) + 'vw';
+          el.style.bottom = '0';
+          el.style.fontSize = (1.5 + Math.random() * 2) + 'rem';
+          el.style.animationDuration = (2.5 + Math.random() * 2) + 's';
+          document.body.appendChild(el);
+          el.addEventListener('animationend', () => el.remove());
+        }, i * 150);
+      }
+    }
+
+    // Randomly spawn emojis every few seconds for fun
+    const funEmojis = ['🐱', '🦫', '🚲', '🥷', '⭐', '💛', '🔬', '😂', '🐾', '⚡'];
+    setInterval(() => {
+      spawnEmoji(funEmojis[Math.floor(Math.random() * funEmojis.length)]);
+    }, 4000);
+  </script>
+
+  <!-- ===== NINJA GAME ===== -->
+  <script>
+  (function() {
+    const canvas = document.getElementById('ninjaCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = 640, H = 400;
+    canvas.width = W; canvas.height = H;
+
+    const namImg = new Image();
+    namImg.src = '1773617334845.png';
+
+    // ── PALETTE ──
+    const C = {
+      bg:'#06060f', floor:'#0f0f22', floorStripe:'#161632', wall:'#080818',
+      text:'#f0f0f8', gold:'#FFD23F', accent:'#9B5DE5',
+      green:'#06D6A0', red:'#EF233C', yellow:'#FFD23F', ok:'#f39c12',
+      ui:'rgba(6,6,20,0.92)', border:'rgba(155,93,229,0.4)',
+      ally:'#06D6A0', enemy:'#EF233C',
+    };
+
+    // ── STATE ──
+    let state = 'TITLE';
+    let blink = 0, frameCount = 0;
+    let score = 0, hiScore = +localStorage.getItem('nNinjaHi') || 0;
+    let lives = 3, level = 1, selectedPlay = 0;
+    let collectedStars = 0, fieldScroll = 0;
+    const FIELD_W = 3400;
+
+    const PLAYS = [
+      { name:'NINJA SPRINT',    desc:'Run the full dojo course!',           target:10 },
+      { name:'WARP WALL RUN',   desc:'Dodge all & hit the finish wall!',    target:15 },
+      { name:'ULTIMATE NINJA',  desc:'Max obstacles — maximum glory!',      target:20 },
+    ];
+    let play = null;
+
+    // ── PLAYER ──
+    const pl = { x:110, y:H*0.52, w:34, h:50, vx:0, vy:0, spd:4.5, inv:0, af:0, at:0 };
+
+    // ── ENTITIES ──
+    let collectibles = [], enemies = [], allies = [], particles = [];
+
+    // ── WALL MINI-GAME ──
+    let wallPhase = 0, wallMeter = 50, wallDir = 1, wallSpd = 2.6;
+    let wallFlashTimer = 0, wallFlashMsg = '', wallFlashColor = '#fff';
+    let wallResult = null;
+
+    // ── INPUT ──
+    const keys = {}, jp = {};
+    canvas.setAttribute('tabindex','0');
+    canvas.addEventListener('keydown', e => { e.preventDefault(); if(!keys[e.code]) jp[e.code]=true; keys[e.code]=true; });
+    canvas.addEventListener('keyup',   e => { keys[e.code]=false; });
+    canvas.addEventListener('click',   () => canvas.focus());
+
+    // ── MOBILE D-PAD ──
+    const dpadMap = {
+      'nc-up':     'ArrowUp',
+      'nc-down':   'ArrowDown',
+      'nc-left':   'ArrowLeft',
+      'nc-right':  'ArrowRight',
+      'nc-action': 'Enter',
+    };
+    Object.entries(dpadMap).forEach(([id, code]) => {
+      const btn = document.getElementById(id);
+      if (!btn) return;
+      const press = e => {
+        e.preventDefault();
+        if (!keys[code]) jp[code] = true;
+        keys[code] = true;
+        btn.classList.add('pressed');
+      };
+      const release = e => {
+        e.preventDefault();
+        keys[code] = false;
+        btn.classList.remove('pressed');
+      };
+      btn.addEventListener('touchstart', press, { passive: false });
+      btn.addEventListener('touchend',   release, { passive: false });
+      btn.addEventListener('touchcancel',release, { passive: false });
+      btn.addEventListener('mousedown',  press);
+      btn.addEventListener('mouseup',    release);
+      btn.addEventListener('mouseleave', release);
+    });
+
+    // scale canvas to fit narrow screens
+    function scaleCanvas() {
+      const wrap = canvas.parentElement;
+      const ratio = Math.min(1, wrap.clientWidth / 640);
+      canvas.style.width  = (640 * ratio) + 'px';
+      canvas.style.height = (400 * ratio) + 'px';
+    }
+    scaleCanvas();
+    window.addEventListener('resize', scaleCanvas);
+
+    // ── HELPERS ──
+    const ri = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+    const rf = (a,b) => Math.random()*(b-a)+a;
+    const clamp = (v,lo,hi) => Math.max(lo,Math.min(hi,v));
+
+    function addPop(x,y,txt,col) {
+      particles.push({x,y,txt,col,life:70,vy:-1.8,vx:rf(-0.6,0.6),type:'txt'});
+    }
+    function addBurst(x,y,col) {
+      for(let i=0;i<14;i++){
+        const a=(i/14)*Math.PI*2,s=rf(2,6);
+        particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,col,life:45,sz:ri(2,6),type:'sq'});
+      }
+    }
+
+    // ── SPAWN LEVEL ──
+    function spawnLevel() {
+      collectibles=[]; enemies=[]; allies=[];
+      const ctypes = [
+        {e:'⭐',pts:5,r:9},{e:'🥷',pts:15,r:10},{e:'🔬',pts:20,r:10},
+        {e:'🐾',pts:10,r:9},{e:'💫',pts:8,r:8},
+      ];
+      let cx = 420;
+      while(cx < FIELD_W-450){
+        const t=ctypes[ri(0,ctypes.length-1)];
+        collectibles.push({x:cx,y:rf(H*0.13,H*0.82),...t,got:false,bob:rf(0,Math.PI*2)});
+        cx+=rf(120,230);
+      }
+      const etypes=[{e:'🔥'},{e:'🪨'},{e:'⚡'},{e:'💣'},{e:'🚧'}];
+      let ex=540;
+      const gap=Math.max(155,370-level*18);
+      while(ex < FIELD_W-380){
+        const et=etypes[ri(0,etypes.length-1)];
+        enemies.push({x:ex,y:rf(H*0.18,H*0.78),w:30,h:44,vx:0,vy:0,af:0,at:0,dead:false,dt:0,sy:0,...et});
+        const en=enemies[enemies.length-1]; en.sy=en.y;
+        ex+=gap+rf(0,130);
+      }
+      // Allies: cats and capybaras flank N
+      [{e:'🐱'},{e:'🦫'},{e:'🐱'}].forEach((a,i)=>{
+        allies.push({x:pl.x-65-i*38,y:pl.y,w:26,h:38,af:0,at:0,...a});
+      });
+    }
+
+    function startPlay(idx){
+      play=PLAYS[idx]; collectedStars=0; fieldScroll=0;
+      pl.x=110; pl.y=H*0.52; pl.vx=0; pl.vy=0; pl.inv=0;
+      particles=[]; spawnLevel(); state='PLAYING';
+    }
+
+    function startWall(){
+      state='WALL'; wallPhase=0; wallMeter=50; wallDir=1;
+      wallSpd=2.4+level*0.38; wallFlashTimer=0; wallResult=null;
+    }
+
+    // ── DRAW N (pixel-art style matching the reference) ──
+    function drawN(x,y,af,inv){
+      if(inv>0 && Math.floor(inv/4)%2===0) return;
+      ctx.save(); ctx.translate(Math.round(x),Math.round(y));
+      // shadow
+      ctx.fillStyle='rgba(0,0,0,0.35)';
+      ctx.beginPath(); ctx.ellipse(0,28,18,6,0,0,Math.PI*2); ctx.fill();
+      const lo=af%2===0?5:-5;
+      // legs
+      ctx.fillStyle='#252540';
+      ctx.fillRect(-12,16,11,15+lo); ctx.fillRect(1,16,11,15-lo);
+      // shoes
+      ctx.fillStyle='#e0e0e0';
+      ctx.fillRect(-14,29+lo,13,5); ctx.fillRect(-1,29-lo,13,5);
+      // body — red shirt
+      ctx.fillStyle='#E8562A'; ctx.fillRect(-14,-8,28,26);
+      ctx.fillStyle='#b03a10'; ctx.fillRect(-14,-8,28,7); ctx.fillRect(-14,12,28,6);
+      // arms
+      const ao=af%2===0?-3:3;
+      ctx.fillStyle='#c8824a';
+      ctx.fillRect(-24,-5+ao,11,20); ctx.fillRect(13,-5-ao,11,20);
+      ctx.fillStyle='#a06030';
+      ctx.fillRect(-25,13+ao,10,8); ctx.fillRect(15,13-ao,10,8);
+      // head
+      ctx.fillStyle='#c8824a';
+      ctx.beginPath(); ctx.arc(0,-21,14,0,Math.PI*2); ctx.fill();
+      // curly hair
+      ctx.fillStyle='#c8a060';
+      ctx.beginPath(); ctx.arc(0,-28,12,Math.PI,0); ctx.fill();
+      ctx.beginPath(); ctx.arc(-9,-32,6,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(0,-35,6.5,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(9,-32,6,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#a07840';
+      ctx.beginPath(); ctx.arc(-7,-31,3.5,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(1,-34,4,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(10,-30,3.5,0,Math.PI*2); ctx.fill();
+      // eyes
+      ctx.fillStyle='#4a2a10';
+      ctx.fillRect(-7,-26,5,5); ctx.fillRect(2,-26,5,5);
+      // smile
+      ctx.strokeStyle='#5a3010'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.arc(0,-17,5,0.2,Math.PI-0.2); ctx.stroke();
+      // cheeks
+      ctx.fillStyle='rgba(230,120,100,0.4)';
+      ctx.beginPath(); ctx.ellipse(-7,-19,4,3,0,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(7,-19,4,3,0,0,Math.PI*2); ctx.fill();
+      ctx.restore();
+    }
+
+    function drawAlly(x,y,type){
+      ctx.save(); ctx.translate(Math.round(x),Math.round(y));
+      ctx.font='1.3rem Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.shadowColor=C.green; ctx.shadowBlur=8;
+      ctx.fillText(type,0,Math.sin(frameCount*0.08+x*0.01)*3);
+      ctx.shadowBlur=0; ctx.restore();
+    }
+
+    function drawEnemy(x,y,dead,dt,type){
+      ctx.save(); ctx.translate(Math.round(x),Math.round(y));
+      if(dead){ctx.rotate(dt*0.12); ctx.globalAlpha=Math.max(0,1-dt/28);}
+      const pulse=Math.sin(frameCount*0.14)*0.3+0.7;
+      const bob=Math.sin(frameCount*0.1+x*0.01)*3;
+      // bright warning background circle
+      ctx.beginPath(); ctx.arc(0,bob,22,0,Math.PI*2);
+      ctx.fillStyle=`rgba(239,35,60,${0.55*pulse})`;
+      ctx.fill();
+      // sharp outer ring
+      ctx.strokeStyle=`rgba(255,80,80,${0.9*pulse})`;
+      ctx.lineWidth=3; ctx.stroke();
+      // exclamation mark above
+      if(!dead){
+        ctx.font='bold 11px monospace'; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+        ctx.fillStyle=`rgba(255,220,0,${pulse})`;
+        ctx.fillText('!',0,bob-26);
+      }
+      // emoji — larger
+      ctx.font='1.8rem Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.shadowColor='#ff4444'; ctx.shadowBlur=18*pulse;
+      ctx.fillText(type,0,bob);
+      ctx.shadowBlur=0; ctx.restore();
+    }
+
+    function drawCollectible(x,y,e,bob){
+      const by=Math.sin(bob)*4;
+      ctx.save(); ctx.translate(Math.round(x),Math.round(y+by));
+      ctx.shadowColor=C.gold; ctx.shadowBlur=10;
+      ctx.font='1.2rem Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(e,0,0); ctx.shadowBlur=0; ctx.restore();
+    }
+
+    // ── DRAW FIELD ──
+    function drawField(){
+      ctx.fillStyle=C.bg; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle=C.floor; ctx.fillRect(0,0,W,H);
+      // dojo grid
+      for(let i=0;i<22;i++){
+        const sx=(i*170-fieldScroll%170);
+        ctx.fillStyle=C.floorStripe; ctx.fillRect(sx,0,2,H);
+      }
+      for(let i=0;i<7;i++){
+        ctx.fillStyle=C.floorStripe; ctx.fillRect(0,i*(H/6),W,2);
+      }
+      // watermark
+      for(let i=0;i<4;i++){
+        const tx=(i*700-fieldScroll%700+220);
+        ctx.globalAlpha=0.05; ctx.fillStyle='#9B5DE5';
+        ctx.font='bold 38px monospace'; ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillText("🥷 NINJA DOJO 🥷",tx,H*0.5);
+      }
+      ctx.globalAlpha=1;
+      // top/bottom wall border
+      ctx.fillStyle=C.wall; ctx.fillRect(0,0,W,16); ctx.fillRect(0,H-16,W,16);
+      // lights
+      for(let i=0;i<5;i++){
+        const lx=(i*140-fieldScroll%140+70);
+        ctx.fillStyle='rgba(155,93,229,0.07)';
+        ctx.beginPath(); ctx.ellipse(lx,0,45,60,0,0,Math.PI*2); ctx.fill();
+      }
+      // warp wall goal
+      const goalX=FIELD_W-200-fieldScroll;
+      if(goalX>-80 && goalX<W+80){
+        const ww=60, wy=16, wh=H-32, sh2=wh/3;
+        ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.fillRect(goalX+5,wy,ww,wh);
+        ctx.fillStyle='#06D6A0'; ctx.fillRect(goalX,wy,ww,sh2);
+        ctx.fillStyle='#FFD23F'; ctx.fillRect(goalX,wy+sh2,ww,sh2);
+        ctx.fillStyle='#EF233C'; ctx.fillRect(goalX,wy+sh2*2,ww,sh2);
+        ctx.font='bold 9px monospace'; ctx.textAlign='center';
+        ctx.fillStyle='white';
+        ctx.fillText('🏆',goalX+ww/2,wy+sh2*0.35);
+        ctx.fillText('GREEN',goalX+ww/2,wy+sh2*0.65);
+        ctx.fillStyle='#222';
+        ctx.fillText('⚡',goalX+ww/2,wy+sh2+sh2*0.35);
+        ctx.fillText('YELLOW',goalX+ww/2,wy+sh2+sh2*0.65);
+        ctx.fillStyle='white';
+        ctx.fillText('💪',goalX+ww/2,wy+sh2*2+sh2*0.35);
+        ctx.fillText('RED',goalX+ww/2,wy+sh2*2+sh2*0.65);
+        ctx.strokeStyle=C.gold; ctx.lineWidth=3; ctx.strokeRect(goalX,wy,ww,wh);
+        ctx.strokeStyle='rgba(0,0,0,0.3)'; ctx.lineWidth=1;
+        ctx.beginPath(); ctx.moveTo(goalX,wy+sh2); ctx.lineTo(goalX+ww,wy+sh2); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(goalX,wy+sh2*2); ctx.lineTo(goalX+ww,wy+sh2*2); ctx.stroke();
+        ctx.fillStyle=C.gold; ctx.font='bold 11px monospace'; ctx.textAlign='center';
+        ctx.fillText('▶ HIT WALL ◀',goalX+ww/2,wy-6);
+      }
+    }
+
+    function drawHUD(){
+      ctx.fillStyle=C.ui; ctx.fillRect(0,0,W,44);
+      ctx.strokeStyle=C.border; ctx.lineWidth=1; ctx.strokeRect(0,0,W,44);
+      ctx.textBaseline='alphabetic';
+      ctx.fillStyle=C.gold; ctx.font='bold 13px monospace'; ctx.textAlign='left';
+      ctx.fillText(play?play.name:'',12,18);
+      ctx.fillStyle='#6a6aaa'; ctx.font='9px monospace';
+      ctx.fillText('ARROWS/WASD TO MOVE',12,34);
+      ctx.textAlign='center';
+      ctx.fillStyle=C.text; ctx.font='bold 12px monospace';
+      ctx.fillText('⭐ '+collectedStars+' STARS',W/2,16);
+      const prog=clamp(fieldScroll/(FIELD_W-W-320),0,1);
+      ctx.fillStyle='#1a1a3a'; ctx.fillRect(W/2-150,24,300,10);
+      const gc=ctx.createLinearGradient(W/2-150,0,W/2+150,0);
+      gc.addColorStop(0,C.accent); gc.addColorStop(1,C.green);
+      ctx.fillStyle=gc; ctx.fillRect(W/2-150,24,300*prog,10);
+      ctx.strokeStyle=C.border; ctx.strokeRect(W/2-150,24,300,10);
+      ctx.fillStyle='#5a5a7a'; ctx.font='7px monospace';
+      ctx.fillText('TO WARP WALL →',W/2,23);
+      ctx.textAlign='right';
+      ctx.font='13px monospace';
+      for(let i=0;i<3;i++) ctx.fillText(i<lives?'❤':'🖤',W-10-i*22,18);
+      ctx.fillStyle=C.gold; ctx.font='bold 12px monospace';
+      ctx.fillText(''+score,W-10,34);
+    }
+
+    // ── SCREENS ──
+    function drawTitle(){
+      ctx.fillStyle=C.bg; ctx.fillRect(0,0,W,H);
+      const by=Math.sin(frameCount*0.04)*7;
+      // animated ninja emoji
+      ctx.font='3.5rem Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.shadowColor=C.accent; ctx.shadowBlur=28;
+      ctx.fillText('🥷',W/2-75,H/2-15+by);
+      ctx.shadowBlur=0;
+      // N character
+      if(namImg.complete && namImg.naturalWidth>0)
+        ctx.drawImage(namImg,W/2-10,H/2-70+by,58,82);
+      ctx.shadowColor=C.accent; ctx.shadowBlur=28;
+      ctx.fillStyle=C.gold; ctx.font='bold 44px monospace'; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+      ctx.fillText('N',W/2,H/2-100);
+      ctx.fillStyle=C.text; ctx.fillText('NINJA RUN',W/2,H/2-58);
+      ctx.shadowBlur=0;
+      ctx.fillStyle=C.accent; ctx.font='10px monospace';
+      ctx.fillText('TECMO BOWL STYLE NINJA OBSTACLE COURSE',W/2,H/2-36);
+      ctx.fillStyle=C.gold; ctx.font='10px monospace';
+      ctx.fillText('HI-SCORE: '+hiScore,W/2,H/2-18);
+      if(Math.floor(blink/28)%2===0){
+        ctx.fillStyle=C.text; ctx.font='bold 14px monospace';
+        ctx.fillText('▶  CLICK HERE THEN PRESS ENTER  ◀',W/2,H/2+65);
+      }
+      ctx.fillStyle='#3a3a5a'; ctx.font='9px monospace';
+      ctx.fillText('ARROWS: MOVE    SPACE/ENTER: ACTION',W/2,H-14);
+    }
+
+    function drawSelect(){
+      ctx.fillStyle=C.bg; ctx.fillRect(0,0,W,H);
+      ctx.shadowColor=C.gold; ctx.shadowBlur=16;
+      ctx.fillStyle=C.gold; ctx.font='bold 24px monospace'; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+      ctx.fillText('SELECT YOUR MISSION',W/2,55);
+      ctx.shadowBlur=0;
+      ctx.fillStyle='#4a4a6a'; ctx.font='9px monospace';
+      ctx.fillText('ARROW KEYS TO SELECT  ·  ENTER TO CONFIRM',W/2,76);
+      const bw=160,bh=120;
+      [[W/2-bw*1.55-10,H/2-bh/2],[W/2-bw/2,H/2-bh/2],[W/2+bw/2+10+bw*0.55-bw/2,H/2-bh/2]].forEach(([px,py],i)=>{
+        const sel=i===selectedPlay;
+        ctx.fillStyle=sel?'rgba(155,93,229,0.22)':'rgba(15,15,30,0.95)';
+        ctx.fillRect(px,py,bw,bh);
+        if(sel){ctx.shadowColor=C.accent;ctx.shadowBlur=16;}
+        ctx.strokeStyle=sel?C.accent:'#2a2a44'; ctx.lineWidth=sel?2.5:1;
+        ctx.strokeRect(px,py,bw,bh); ctx.shadowBlur=0;
+        ctx.fillStyle=sel?C.gold:C.text; ctx.font=`bold ${sel?13:11}px monospace`; ctx.textAlign='left';
+        ctx.fillText(PLAYS[i].name,px+10,py+30);
+        ctx.fillStyle=sel?C.accent:'#4a4a7a'; ctx.font='9px monospace';
+        ctx.fillText('TARGET: '+PLAYS[i].target+' ⭐',px+10,py+50);
+        ctx.fillStyle='#5a5a7a'; ctx.font='9px monospace';
+        ctx.fillText(PLAYS[i].desc,px+10,py+68);
+        ctx.font='1rem Arial'; ctx.textAlign='center';
+        ctx.fillText('🥷🐱🦫',px+bw/2,py+100);
+      });
+    }
+
+    function drawWallScreen(){
+      ctx.fillStyle=C.bg; ctx.fillRect(0,0,W,H);
+      // the warp wall visual on the right
+      const wx=W*0.72,ww=70,wy=20,wh=H-40,sh3=wh/3;
+      ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.fillRect(wx+5,wy,ww,wh);
+      ctx.fillStyle='#06D6A0'; ctx.fillRect(wx,wy,ww,sh3);
+      ctx.fillStyle='#FFD23F'; ctx.fillRect(wx,wy+sh3,ww,sh3);
+      ctx.fillStyle='#EF233C'; ctx.fillRect(wx,wy+sh3*2,ww,sh3);
+      ctx.font='bold 9px monospace'; ctx.textAlign='center';
+      ctx.fillStyle='white'; ctx.fillText('🏆 GREEN',wx+ww/2,wy+sh3*0.5);
+      ctx.fillStyle='#222';  ctx.fillText('⚡ YELLOW',wx+ww/2,wy+sh3+sh3*0.5);
+      ctx.fillStyle='white'; ctx.fillText('💪 RED',wx+ww/2,wy+sh3*2+sh3*0.5);
+      ctx.strokeStyle=C.gold; ctx.lineWidth=3; ctx.strokeRect(wx,wy,ww,wh);
+      ctx.strokeStyle='rgba(0,0,0,0.3)'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(wx,wy+sh3); ctx.lineTo(wx+ww,wy+sh3); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(wx,wy+sh3*2); ctx.lineTo(wx+ww,wy+sh3*2); ctx.stroke();
+      // N running
+      if(namImg.complete && namImg.naturalWidth>0)
+        ctx.drawImage(namImg,W*0.24-26,H/2-52,52,74);
+      ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+      ctx.shadowColor=C.gold; ctx.shadowBlur=14;
+      ctx.fillStyle=C.gold; ctx.font='bold 20px monospace';
+      ctx.fillText('🏁 HIT THE WARP WALL!',W/2,40);
+      ctx.shadowBlur=0;
+      ctx.fillStyle=C.text; ctx.font='11px monospace';
+      ctx.fillText(collectedStars+' STARS COLLECTED',W/2,60);
+      ctx.fillStyle='#4a4a6a'; ctx.font='9px monospace';
+      ctx.fillText('AIM FOR 🟢 GREEN ZONE = NINJA MASTER!',W/2,76);
+      if(wallPhase===0){
+        if(Math.floor(blink/22)%2===0){
+          ctx.fillStyle=C.text; ctx.font='bold 15px monospace';
+          ctx.fillText('▶  PRESS SPACE TO RUN AT THE WALL  ◀',W/2,H-48);
+        }
+      } else {
+        // power meter
+        const mw=400,mh=38,mx=W/2-mw/2,my=H-118;
+        ctx.fillStyle='#1a1a30'; ctx.fillRect(mx,my,mw,mh);
+        [{s:0,e:0.2,c:C.red},{s:0.2,e:0.36,c:C.ok},{s:0.36,e:0.64,c:C.green},
+         {s:0.64,e:0.8,c:C.ok},{s:0.8,e:1,c:C.red}].forEach(z=>{
+          ctx.globalAlpha=0.45; ctx.fillStyle=z.c;
+          ctx.fillRect(mx+z.s*mw,my,(z.e-z.s)*mw,mh); ctx.globalAlpha=1;
+        });
+        ctx.fillStyle='rgba(255,255,255,0.55)'; ctx.font='8px monospace'; ctx.textAlign='center';
+        ctx.fillText('🟢 GREEN ZONE',W/2,my+mh/2+4);
+        ctx.shadowColor='#fff'; ctx.shadowBlur=14;
+        ctx.fillStyle='#fff'; ctx.fillRect(mx+wallMeter/100*mw-5,my-6,10,mh+12);
+        ctx.shadowBlur=0;
+        ctx.strokeStyle=C.border; ctx.lineWidth=2; ctx.strokeRect(mx,my,mw,mh);
+        if(Math.floor(blink/14)%2===0){
+          ctx.fillStyle=C.text; ctx.font='bold 14px monospace';
+          ctx.fillText('HIT SPACE NOW!',W/2,my-15);
+        }
+      }
+      if(wallFlashTimer>0){
+        ctx.globalAlpha=Math.min(1,wallFlashTimer/20);
+        ctx.fillStyle=wallFlashColor; ctx.font='bold 26px monospace'; ctx.textAlign='center';
+        ctx.fillText(wallFlashMsg,W/2,H/2+15); ctx.globalAlpha=1;
+      }
+    }
+
+    function drawResultScreen(){
+      ctx.fillStyle=C.bg; ctx.fillRect(0,0,W,H);
+      const cfg={
+        green: {color:'#06D6A0',title:'🏆 NINJA MASTER!',      msg:'PERFECT! You hit the GREEN zone!'},
+        yellow:{color:'#FFD23F',title:'⚡ NINJA WARRIOR!',      msg:'Great job! You hit the YELLOW zone!'},
+        red:   {color:'#EF233C',title:'💪 KEEP TRAINING, N!',msg:"You hit RED — aim for GREEN next time!"},
+      }[wallResult];
+      ctx.fillStyle=cfg.color; ctx.fillRect(0,55,W,65);
+      ctx.font='bold 28px monospace'; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+      ctx.fillStyle=wallResult==='yellow'?'#222':'white';
+      ctx.fillText(cfg.title,W/2,95);
+      if(namImg.complete && namImg.naturalWidth>0) ctx.drawImage(namImg,W/2-30,125,60,85);
+      ctx.font='10px monospace'; ctx.fillStyle='white'; ctx.textAlign='center';
+      ctx.fillText(cfg.msg,W/2,225);
+      const pts=collectedStars*level*8;
+      ctx.fillStyle=C.gold; ctx.font='bold 12px monospace';
+      ctx.fillText('+'+pts+' POINTS  ·  STARS: '+collectedStars,W/2,244);
+      if(score+pts>hiScore){ctx.fillStyle=C.green;ctx.font='bold 11px monospace';ctx.fillText('NEW HI-SCORE!',W/2,262);}
+      if(Math.floor(blink/26)%2===0){
+        ctx.fillStyle=C.text; ctx.font='12px monospace';
+        ctx.fillText('PRESS ENTER FOR NEXT MISSION',W/2,H-18);
+      }
+      particles.forEach(p=>{
+        if(p.type!=='sq')return;
+        ctx.fillStyle=p.col; ctx.globalAlpha=p.life/45;
+        ctx.fillRect(p.x,p.y,p.sz,p.sz); ctx.globalAlpha=1;
+      });
+    }
+
+    function drawGameOver(){
+      ctx.fillStyle=C.bg; ctx.fillRect(0,0,W,H);
+      ctx.shadowColor=C.red; ctx.shadowBlur=40;
+      ctx.fillStyle=C.red; ctx.font='bold 52px monospace'; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+      ctx.fillText('NINJA DOWN!',W/2,H/2-20);
+      ctx.shadowBlur=0;
+      ctx.fillStyle=C.text; ctx.font='18px monospace'; ctx.fillText('SCORE: '+score,W/2,H/2+26);
+      ctx.fillStyle=C.gold; ctx.fillText('HI-SCORE: '+hiScore,W/2,H/2+54);
+      if(score>=hiScore&&score>0){ctx.fillStyle=C.green;ctx.font='bold 13px monospace';ctx.fillText('NEW HI-SCORE!',W/2,H/2+80);}
+      if(Math.floor(blink/28)%2===0){ctx.fillStyle=C.text;ctx.font='13px monospace';ctx.fillText('PRESS ENTER TO TRY AGAIN',W/2,H-22);}
+    }
+
+    // ── UPDATE ──
+    function updatePlaying(){
+      pl.vx=0; pl.vy=0;
+      if(keys['ArrowRight']||keys['KeyD']) pl.vx= pl.spd;
+      if(keys['ArrowLeft'] ||keys['KeyA']) pl.vx=-pl.spd*0.75;
+      if(keys['ArrowUp']   ||keys['KeyW']) pl.vy=-pl.spd;
+      if(keys['ArrowDown'] ||keys['KeyS']) pl.vy= pl.spd;
+      pl.x+=pl.vx; pl.y+=pl.vy;
+      // scroll camera
+      if(pl.x>W*0.55 && fieldScroll<FIELD_W-W){
+        const sc=pl.vx; fieldScroll+=sc; pl.x-=sc;
+        collectibles.forEach(c=>c.x-=sc);
+        enemies.forEach(e=>e.x-=sc);
+        allies.forEach(a=>a.x-=sc);
+      }
+      pl.x=clamp(pl.x,22,W-22);
+      pl.y=clamp(pl.y,18,H-18);
+      if(pl.vx!==0||pl.vy!==0){pl.at++;if(pl.at>8){pl.af++;pl.at=0;}}
+      if(pl.inv>0) pl.inv--;
+      // allies follow
+      allies.forEach((a,i)=>{
+        a.x+=(pl.x-70-i*38-a.x)*0.1;
+        a.y+=(pl.y-a.y)*0.1;
+      });
+      // collect stars
+      collectibles.forEach(c=>{
+        c.bob+=0.05;
+        if(c.got) return;
+        if(Math.abs(c.x-pl.x)<24 && Math.abs(c.y-pl.y)<28){
+          c.got=true; collectedStars+=c.pts; score+=c.pts;
+          addPop(c.x,c.y-22,'+'+c.pts,C.gold); addBurst(c.x,c.y,C.gold);
+        }
+      });
+      // enemies
+      enemies.forEach(e=>{
+        if(e.dead){e.dt++;return;}
+        const dx=pl.x-e.x,dy=pl.y-e.y,dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<300){const spd=1.3+level*0.16; e.vx=(dx/dist)*spd; e.vy=(dy/dist)*spd;}
+        else{e.vx=Math.sin(frameCount*0.02+e.sy)*0.75; e.vy=Math.cos(frameCount*0.016+e.sy*1.2)*0.5;}
+        e.x+=e.vx; e.y+=e.vy;
+        // allies block
+        allies.forEach(a=>{
+          if(Math.abs(e.x-a.x)<30&&Math.abs(e.y-a.y)<38){
+            e.dead=true; e.dt=0;
+            addBurst(e.x,e.y,C.green); addPop(e.x,e.y-30,'BLOCKED!',C.green);
+          }
+        });
+        // hit player
+        if(pl.inv===0&&Math.abs(e.x-pl.x)<28&&Math.abs(e.y-pl.y)<34){
+          lives--; pl.inv=105;
+          addPop(pl.x,pl.y-40,'OUCH!',C.red); addBurst(pl.x,pl.y,C.red);
+          if(lives<=0){state='GAMEOVER';}
+        }
+      });
+      enemies=enemies.filter(e=>!e.dead||e.dt<30);
+      // reach warp wall
+      const gx=FIELD_W-200-fieldScroll;
+      if(Math.abs(gx-pl.x)<62&&pl.y>18&&pl.y<H-18) startWall();
+    }
+
+    function updateWall(){
+      if(wallFlashTimer>0) wallFlashTimer--;
+      if(wallPhase===0){
+        if(jp['Space']||jp['Enter']){wallPhase=1;wallMeter=50;wallDir=1;}
+      } else {
+        wallMeter+=wallDir*wallSpd;
+        if(wallMeter>=100){wallMeter=100;wallDir=-1;}
+        if(wallMeter<=0)  {wallMeter=0;  wallDir= 1;}
+        if(jp['Space']||jp['Enter']){
+          if(wallMeter>=36&&wallMeter<=64){
+            wallResult='green'; wallFlashMsg='🏆 NINJA MASTER! PERFECT!'; wallFlashColor=C.green;
+          } else if(wallMeter>=20&&wallMeter<=80){
+            wallResult='yellow'; wallFlashMsg='⚡ NINJA WARRIOR! NICE!'; wallFlashColor=C.yellow;
+          } else {
+            wallResult='red'; wallFlashMsg='💪 KEEP TRAINING!'; wallFlashColor=C.red;
+          }
+          wallFlashTimer=65;
+          addBurst(W/2,H/2,wallResult==='green'?C.green:wallResult==='yellow'?C.yellow:C.red);
+          setTimeout(()=>{state='RESULT';},850);
+        }
+      }
+    }
+
+    // ── MAIN LOOP ──
+    function update(){
+      frameCount++; blink++;
+      particles=particles.filter(p=>p.life>0);
+      particles.forEach(p=>{p.x+=p.vx||0;p.y+=p.vy||0;p.life--;if(p.vy!==undefined)p.vy+=0.06;});
+      if(state==='TITLE') { if(jp['Enter']||jp['Space']){state='SELECT';selectedPlay=0;} }
+      else if(state==='SELECT'){
+        if(jp['ArrowLeft']||jp['ArrowUp'])    selectedPlay=(selectedPlay-1+PLAYS.length)%PLAYS.length;
+        if(jp['ArrowRight']||jp['ArrowDown']) selectedPlay=(selectedPlay+1)%PLAYS.length;
+        if(jp['Enter']||jp['Space']) startPlay(selectedPlay);
+      }
+      else if(state==='PLAYING') updatePlaying();
+      else if(state==='WALL')    updateWall();
+      else if(state==='RESULT'){
+        if(frameCount%2===0) addBurst(rf(0,W),rf(0,H*0.4),[C.gold,C.accent,C.green,'#f472b6'][ri(0,3)]);
+        if(jp['Enter']||jp['Space']){
+          const pts=collectedStars*level*8; score+=pts;
+          if(score>hiScore){hiScore=score;localStorage.setItem('nNinjaHi',hiScore);}
+          level++; wallSpd=2.4+level*0.35; state='SELECT'; selectedPlay=0;
+        }
+      }
+      else if(state==='GAMEOVER'){
+        if(jp['Enter']||jp['Space']){score=0;lives=3;level=1;wallSpd=2.6;state='SELECT';selectedPlay=0;}
+      }
+      for(const k in jp) delete jp[k];
+    }
+
+    function draw(){
+      ctx.clearRect(0,0,W,H); ctx.textBaseline='alphabetic';
+      if(state==='TITLE')    drawTitle();
+      else if(state==='SELECT')   drawSelect();
+      else if(state==='PLAYING'){
+        drawField();
+        collectibles.filter(c=>!c.got&&c.x>-50&&c.x<W+50).forEach(c=>drawCollectible(c.x,c.y,c.e,c.bob));
+        allies.forEach(a=>drawAlly(a.x,a.y,a.e));
+        enemies.forEach(e=>drawEnemy(e.x,e.y,e.dead,e.dt,e.e));
+        drawN(pl.x,pl.y,pl.af,pl.inv);
+        particles.forEach(p=>{
+          if(p.type==='txt'){
+            ctx.fillStyle=p.col; ctx.globalAlpha=p.life/70;
+            ctx.font='bold 12px monospace'; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+            ctx.fillText(p.txt,p.x,p.y); ctx.globalAlpha=1;
+          } else if(p.type==='sq'){
+            ctx.fillStyle=p.col; ctx.globalAlpha=p.life/45;
+            ctx.fillRect(p.x,p.y,p.sz,p.sz); ctx.globalAlpha=1;
+          }
+        });
+        drawHUD();
+      }
+      else if(state==='WALL'){
+        drawWallScreen();
+        particles.forEach(p=>{
+          if(p.type==='txt'){
+            ctx.fillStyle=p.col; ctx.globalAlpha=p.life/70;
+            ctx.font='bold 13px monospace'; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+            ctx.fillText(p.txt,p.x,p.y); ctx.globalAlpha=1;
+          }
+        });
+      }
+      else if(state==='RESULT')   drawResultScreen();
+      else if(state==='GAMEOVER') drawGameOver();
+    }
+
+    (function loop(){ update(); draw(); requestAnimationFrame(loop); })();
+  })();
+  </script>
+
+  <!-- ===== BIKE GAME ===== -->
+  <script>
+  (function() {
+    const canvas = document.getElementById('gameCanvas');
+    const ctx    = canvas.getContext('2d');
+    const nImg = new Image();
+    nImg.src = '1773617334845.png';
+    const W = canvas.width;   // 640
+    const H = canvas.height;  // 280
+    const GROUND   = 200;
+    const GRAVITY  = 0.55;
+    const JUMP_VEL = -13;
+    const BASE_SPEED = 3.5;
+    const WIN_DIST   = 2200;
+
+    // ── STATE ────────────────────────────────────────────
+    let state, score, lives, distance, speed, frame;
+    let invincible, ninjaMode;
+    let announceText, announceTimer;
+    let storyPhase;
+
+    const player = { x: 110, y: GROUND, vy: 0, jumping: false, doubled: false };
+
+    let obstacles    = [];
+    let collectibles = [];
+    let bgObjs       = [];
+    let particles    = [];
+    let obTimer, colTimer, bgTimer;
+
+    // ── STORY PHASES ─────────────────────────────────────
+    const PHASES = [
+      { dist: 0,    label: '🌳 LEAVING THE PARK!',  sky: '#2d6a2d', ground: '#4a8c2a' },
+      { dist: 550,  label: '🏙️ HIT THE STREET!',    sky: '#3a3a55', ground: '#555'    },
+      { dist: 1200, label: '🏘️ ALMOST HOME!',        sky: '#5a4040', ground: '#666'    },
+      { dist: 1800, label: '🏠 NEARLY THERE!',       sky: '#4a3060', ground: '#555'    },
+    ];
+
+    // ── HELPERS ───────────────────────────────────────────
+    function announce(txt, dur) { announceText = txt; announceTimer = dur || 90; }
+
+    function spawnParticles(x, y) {
+      const emojis = ['✨','⭐','💫','🌟'];
+      for (let i = 0; i < 6; i++) {
+        particles.push({
+          x, y,
+          vx: (Math.random() - 0.5) * 5,
+          vy: -Math.random() * 5 - 2,
+          emoji: emojis[Math.floor(Math.random() * emojis.length)],
+          life: 35,
+        });
+      }
+    }
+
+    // ── SPAWN ─────────────────────────────────────────────
+    function spawnObstacle() {
+      const types = [
+        { e: '🪨', tall: false },
+        { e: '🐕', tall: false },
+        { e: '🚧', tall: false },
+      ];
+      const t = types[Math.floor(Math.random() * types.length)];
+      obstacles.push({ x: W + 60, y: GROUND + 18, e: t.e });
+    }
+
+    function spawnCollectible() {
+      const types = [
+        { e: '🐱', pts: 10,  y: GROUND - (Math.random() > 0.4 ? 70 : 5)  },
+        { e: '🦫', pts: 20,  y: GROUND + 5                                  },
+        { e: '⭐', pts: 5,   y: GROUND - 90                                 },
+        { e: '🥷', pts: 15,  y: GROUND - 60, ninja: true                    },
+        { e: '🔬', pts: 30,  y: GROUND - 40                                 },
+      ];
+      const t = types[Math.floor(Math.random() * types.length)];
+      collectibles.push({ x: W + 60, y: t.y, e: t.e, pts: t.pts, ninja: !!t.ninja });
+    }
+
+    const BG_BY_PHASE = [
+      ['🌳','🌲','🌸','🐦','🌼'],
+      ['🏢','🚗','🚦','🏪','🚌'],
+      ['🏠','🌻','🐈','🚗','🛖'],
+      ['🏠','🏡','🌟','🌙','🐱'],
+    ];
+
+    function spawnBg() {
+      const pool = BG_BY_PHASE[storyPhase] || BG_BY_PHASE[0];
+      bgObjs.push({
+        x: W + 60,
+        y: GROUND - 55 - Math.random() * 50,
+        e: pool[Math.floor(Math.random() * pool.length)],
+        spd: 0.4 + Math.random() * 0.35,
+        sz: 1.1 + Math.random() * 0.5,
+      });
+    }
+
+    // ── RESET ─────────────────────────────────────────────
+    function resetGame() {
+      state = 'playing';
+      score = 0; lives = 3; distance = 0;
+      speed = BASE_SPEED; frame = 0;
+      storyPhase = 0; invincible = 0; ninjaMode = false;
+      announceText = ''; announceTimer = 0;
+      obstacles = []; collectibles = []; bgObjs = []; particles = [];
+      obTimer = 90; colTimer = 70; bgTimer = 60;
+      player.y = GROUND; player.vy = 0;
+      player.jumping = false; player.doubled = false;
+      announce('🌳 LEAVING THE PARK!', 120);
+    }
+
+    // ── INPUT ─────────────────────────────────────────────
+    function doJump() {
+      if (state === 'title' || state === 'win' || state === 'lose') { resetGame(); return; }
+      if (state !== 'playing') return;
+      if (!player.jumping) {
+        player.vy = JUMP_VEL; player.jumping = true;
+      } else if (!player.doubled) {
+        player.vy = JUMP_VEL * 0.8; player.doubled = true;
+        announce('🥷 DOUBLE JUMP!', 60);
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.code === 'Space' || e.code === 'ArrowUp') { e.preventDefault(); doJump(); }
+    });
+    canvas.addEventListener('click',      () => doJump());
+    canvas.addEventListener('touchstart', e => { e.preventDefault(); doJump(); }, { passive: false });
+
+    // ── UPDATE ────────────────────────────────────────────
+    function update() {
+      if (state !== 'playing') return;
+      frame++;
+      distance += speed / 60;
+      score = Math.floor(distance * 10 + score * 0.001);
+      speed = BASE_SPEED + distance / 600;
+
+      // story phase
+      for (let i = PHASES.length - 1; i >= 0; i--) {
+        if (distance >= PHASES[i].dist && storyPhase !== i) {
+          storyPhase = i;
+          announce(PHASES[i].label, 140);
+          break;
+        }
+      }
+
+      if (distance >= WIN_DIST) { state = 'win'; return; }
+
+      // player physics
+      player.vy += GRAVITY;
+      player.y  += player.vy;
+      if (player.y >= GROUND) {
+        player.y = GROUND; player.vy = 0;
+        player.jumping = false; player.doubled = false;
+      }
+
+      if (invincible > 0) invincible--;
+      if (ninjaMode && invincible === 0) ninjaMode = false;
+      if (announceTimer > 0) announceTimer--;
+
+      // spawn timers
+      if (--obTimer  <= 0) { spawnObstacle();   obTimer  = Math.max(55, 130 - distance / 25); }
+      if (--colTimer <= 0) { spawnCollectible(); colTimer = 70 + Math.random() * 50; }
+      if (--bgTimer  <= 0) { spawnBg();          bgTimer  = 90 + Math.random() * 80; }
+
+      // obstacles
+      obstacles = obstacles.filter(o => {
+        o.x -= speed;
+        if (!o.hit && invincible === 0) {
+          if (Math.abs(player.x - o.x) < 22 && Math.abs((player.y + 10) - o.y) < 22) {
+            o.hit = true;
+            lives--;
+            invincible = 100;
+            announce(lives > 0 ? 'OUCH! 💥 Keep going!' : 'OH NO! 💥', 90);
+            if (lives <= 0) { state = 'lose'; }
+          }
+        }
+        return o.x > -60;
+      });
+
+      // collectibles
+      collectibles = collectibles.filter(c => {
+        c.x -= speed;
+        if (!c.got) {
+          if (Math.abs(player.x - c.x) < 28 && Math.abs((player.y + 5) - c.y) < 28) {
+            c.got = true;
+            score += c.pts;
+            spawnParticles(c.x, c.y);
+            if (c.ninja) {
+              invincible = 200; ninjaMode = true;
+              announce('🥷 NINJA POWER! Unbeatable!', 110);
+            } else {
+              announce(c.e + '  +' + c.pts + ' points!', 70);
+            }
+          }
+        }
+        return c.x > -60 && !c.got;
+      });
+
+      // bg
+      bgObjs = bgObjs.filter(b => { b.x -= speed * b.spd; return b.x > -80; });
+
+      // particles
+      particles = particles.filter(p => {
+        p.x += p.vx; p.y += p.vy; p.vy += 0.15; p.life--;
+        return p.life > 0;
+      });
+    }
+
+    // ── DRAW HELPERS ──────────────────────────────────────
+    function em(emoji, x, y, size) {
+      ctx.font = (size || 1.6) + 'rem Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(emoji, x, y);
+    }
+
+    function retro(txt, x, y, size, color, stroke) {
+      ctx.font = 'bold ' + (size || 1) + 'rem "Fredoka One", cursive';
+      ctx.textAlign = 'center';
+      if (stroke !== false) {
+        ctx.strokeStyle = stroke || '#000';
+        ctx.lineWidth = 3;
+        ctx.strokeText(txt, x, y);
+      }
+      ctx.fillStyle = color || '#FFD23F';
+      ctx.fillText(txt, x, y);
+    }
+
+    // ── DRAW ──────────────────────────────────────────────
+    function draw() {
+      const ph = PHASES[storyPhase] || PHASES[0];
+
+      // sky gradient
+      const grad = ctx.createLinearGradient(0, 0, 0, GROUND);
+      grad.addColorStop(0, ph.sky);
+      grad.addColorStop(1, adjustColor(ph.sky, 30));
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, GROUND);
+
+      // bg objects (parallax)
+      bgObjs.forEach(b => em(b.e, b.x, b.y, b.sz));
+
+      // ground
+      ctx.fillStyle = '#6B8E23';
+      ctx.fillRect(0, GROUND + 2, W, 18);
+      ctx.fillStyle = ph.ground || '#555';
+      ctx.fillRect(0, GROUND + 18, W, H - GROUND - 18);
+
+      // road dashes
+      ctx.fillStyle = '#FFD23F';
+      const dashOff = (frame * speed) % 60;
+      for (let x = -dashOff; x < W; x += 60) ctx.fillRect(x, GROUND + 24, 32, 4);
+
+      // obstacles
+      obstacles.forEach(o => em(o.e, o.x, o.y, 1.8));
+
+      // collectibles (slight hover bob)
+      collectibles.forEach(c => {
+        const bob = Math.sin(frame * 0.08 + c.x) * 4;
+        em(c.e, c.x, c.y + bob, 1.5);
+      });
+
+      // particles
+      particles.forEach(p => {
+        ctx.globalAlpha = p.life / 35;
+        em(p.emoji, p.x, p.y, 0.9);
+        ctx.globalAlpha = 1;
+      });
+
+      // player — blink when hurt
+      const blink = invincible > 0 && Math.floor(frame / 5) % 2 === 0;
+      if (!blink) {
+        if (ninjaMode) {
+          em('⚡', player.x - 22, player.y - 15, 1);
+          em('⚡', player.x + 22, player.y - 15, 1);
+        }
+        // bike
+        em('🚲', player.x, player.y + 24, 2);
+        // N character image on the bike
+        if (nImg.complete && nImg.naturalWidth > 0) {
+          const iw = 44, ih = 60;
+          ctx.drawImage(nImg, player.x - iw / 2, player.y - ih + 20, iw, ih);
+        } else {
+          em('😄', player.x + 2, player.y + 4, 1.1);
+        }
+        if (ninjaMode) em('🥷', player.x + 20, player.y - 42, 0.85);
+      }
+
+      // HUD
+      ctx.fillStyle = 'rgba(0,0,0,0.45)';
+      ctx.fillRect(0, 0, W, 34);
+      retro('SCORE: ' + score, 90, 22, 1, '#FFD23F', false);
+      ctx.textAlign = 'right';
+      ctx.font = '1rem Arial';
+      ctx.fillText('❤️'.repeat(Math.max(0, lives)), W - 10, 22);
+
+      // progress bar
+      const prog = Math.min(distance / WIN_DIST, 1);
+      ctx.fillStyle = 'rgba(0,0,0,0.5)';
+      ctx.fillRect(8, H - 18, W - 16, 10);
+      const barGrad = ctx.createLinearGradient(8, 0, W - 16, 0);
+      barGrad.addColorStop(0, '#06D6A0');
+      barGrad.addColorStop(1, '#FFD23F');
+      ctx.fillStyle = barGrad;
+      ctx.fillRect(8, H - 18, (W - 16) * prog, 10);
+      ctx.font = '0.7rem Arial'; ctx.textAlign = 'left';
+      ctx.fillStyle = 'white'; ctx.fillText('🌳', 6, H - 19);
+      ctx.textAlign = 'right'; ctx.fillText('🏠', W - 4, H - 19);
+      ctx.textAlign = 'center';
+      ctx.font = '0.75rem Arial';
+      ctx.fillText('🚲', 8 + (W - 16) * prog, H - 17);
+
+      // announce text
+      if (announceTimer > 0) {
+        const a = Math.min(1, announceTimer / 20);
+        ctx.globalAlpha = a;
+        retro(announceText, W / 2, 65, 1.4, '#FFD23F');
+        ctx.globalAlpha = 1;
+      }
+
+      // screens
+      if (state === 'title') drawTitle();
+      else if (state === 'win')  drawWin();
+      else if (state === 'lose') drawLose();
+    }
+
+    function overlay() {
+      ctx.fillStyle = 'rgba(10,10,20,0.88)';
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    function blinkText(txt, x, y, size, color) {
+      if (Math.floor(frame / 28) % 2 === 0) retro(txt, x, y, size, color);
+    }
+
+    function drawTitle() {
+      overlay();
+      retro("🚲 N'S BIKE RIDE HOME!", W/2, 65, 1.5, '#FFD23F');
+      ctx.font = '1.3rem Arial'; ctx.textAlign = 'center'; ctx.fillStyle = 'white';
+      ctx.fillText('Ride from the park all the way home!', W/2, 100);
+      ctx.font = '1.1rem Arial';
+      ctx.fillText('Collect  🐱🦫⭐🔬  for points', W/2, 128);
+      ctx.fillText('Dodge  🪨🐕🚧  or lose a ❤️', W/2, 153);
+      ctx.fillText('Grab  🥷  for NINJA POWER — invincible!', W/2, 178);
+      blinkText('▶  PRESS SPACE or TAP TO START  ◀', W/2, 218, 1.1, '#06D6A0');
+    }
+
+    function drawWin() {
+      overlay();
+      retro('🏠 YOU MADE IT HOME!', W/2, 70, 1.8, '#FFD23F');
+      if (nImg.complete && nImg.naturalWidth > 0) {
+        ctx.drawImage(nImg, W/2 - 35, 78, 70, 96);
+      }
+      ctx.font = '1.8rem Arial'; ctx.textAlign = 'center';
+      ctx.fillText('🎉 👧🏽 🐱 🦫 🥷 🎉', W/2, 185);
+      ctx.font = '1rem Arial'; ctx.fillStyle = 'white';
+      ctx.fillText("Your sister is at the door cheering for you!", W/2, 205);
+      retro('FINAL SCORE: ' + score, W/2, 228, 1.3, '#06D6A0', false);
+      blinkText('▶  SPACE or TAP to ride again!  ◀', W/2, 258, 1, '#F15BB5');
+    }
+
+    function drawLose() {
+      overlay();
+      retro('WIPEOUT! 💥', W/2, 70, 2, '#EF233C');
+      ctx.font = '1.5rem Arial'; ctx.textAlign = 'center'; ctx.fillText('🚲💨', W/2, 110);
+      ctx.font = '1rem Arial'; ctx.fillStyle = 'white';
+      ctx.fillText("Ninja N never gives up!", W/2, 145);
+      retro('SCORE: ' + score, W/2, 175, 1.2, '#FFD23F', false);
+      blinkText('▶  SPACE or TAP to try again!  ◀', W/2, 218, 1, '#06D6A0');
+    }
+
+    function adjustColor(hex, amount) {
+      // lighten a hex color slightly for gradient
+      try {
+        let n = parseInt(hex.replace('#',''), 16);
+        let r = Math.min(255, ((n >> 16) & 0xff) + amount);
+        let g = Math.min(255, ((n >> 8)  & 0xff) + amount);
+        let b = Math.min(255, ( n        & 0xff) + amount);
+        return '#' + ((r<<16)|(g<<8)|b).toString(16).padStart(6,'0');
+      } catch(e) { return hex; }
+    }
+
+    // ── LOOP ──────────────────────────────────────────────
+    function loop() { update(); draw(); requestAnimationFrame(loop); }
+
+    // init
+    state = 'title'; frame = 0; score = 0; lives = 3;
+    distance = 0; speed = BASE_SPEED; storyPhase = 0;
+    invincible = 0; ninjaMode = false; announceText = ''; announceTimer = 0;
+    obstacles = []; collectibles = []; bgObjs = []; particles = [];
+    obTimer = 90; colTimer = 70; bgTimer = 60;
+    player.y = GROUND; player.vy = 0; player.jumping = false; player.doubled = false;
+    loop();
+  })();
+  </script>
+
+  <!-- ===== WORD BLASTER GAME ===== -->
+  <script>
+  (function () {
+    const LEVEL1 = ['a','about','also','and','another','any','are','as','be','been','being','between','by','called','come','could','day','do','does','down','each','first','for','friend','from','good','has','have','he','her','here','his','how','I','into','is','little','look','many','may','me','month','Mr.','Mrs.','my','new','none','nothing','now','number','of','one','or','other','our','out','over','own','people','put','said','say','says','see','she','should','some','the','their','there','they','to','too','try','two','very','want','was','water','way','we','were','what','when','where','who','why','word','work','would','write','you','your'];
+
+    const BUBBLE_CFG = [
+      { color:'#F15BB5', dark:'#a02060' },
+      { color:'#118AB2', dark:'#0a5070' },
+      { color:'#06D6A0', dark:'#048060' },
+      { color:'#FF6B35', dark:'#b04010' },
+    ];
+    const CORRECT_MSGS = ['Amazing! 🎉','You got it! ⭐','YES! 🔥','Incredible! 🌟','PERFECT! 🏆','Way to go! 💪','Super! ✨','Brilliant! 🎊','BOOM! 💥','NICE! 🙌'];
+    const WRONG_MSGS   = ['Try again! 💪','Not that one…','Keep looking!','You can do it!','Almost! Look again!'];
+    const WORDS_PER_ROUND = 10;
+
+    let wordQueue = [], curIdx = 0, roundMistakes = 0;
+    let score = 0, combo = 0, locked = false;
+    let charTimer = null;
+    const wrap = document.getElementById('wg-wrap');
+
+    // ── HELPERS ──────────────────────────────────────────
+    function shuffle(a) {
+      const b = [...a];
+      for (let i = b.length-1; i > 0; i--) {
+        const j = Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]];
+      }
+      return b;
+    }
+
+    function speak(word) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(
+        word.replace(/Mr\./g,'Mister').replace(/Mrs\./g,'Missus')
+      );
+      u.rate = 0.78; u.pitch = 1.15; u.volume = 1;
+      window.speechSynthesis.speak(u);
+    }
+
+    function playTone(freq, type, dur, vol) {
+      try {
+        const ac = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ac.createOscillator(), gain = ac.createGain();
+        osc.connect(gain); gain.connect(ac.destination);
+        osc.frequency.value = freq; osc.type = type || 'sine';
+        gain.gain.setValueAtTime(vol||0.28, ac.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime+dur);
+        osc.start(); osc.stop(ac.currentTime+dur);
+      } catch(e) {}
+    }
+
+    function playCorrect() {
+      playTone(523,'sine',0.13,0.28);
+      setTimeout(()=>playTone(659,'sine',0.13,0.28),110);
+      setTimeout(()=>playTone(784,'sine',0.22,0.32),220);
+    }
+
+    function playWrong() {
+      playTone(220,'sawtooth',0.18,0.2);
+      setTimeout(()=>playTone(180,'sawtooth',0.22,0.18),150);
+    }
+
+    function setChar(state) {
+      const el = document.getElementById('wg-char');
+      if (!el) return;
+      el.className = 'wg-char-' + state;
+      if (charTimer) clearTimeout(charTimer);
+      if (state !== 'idle') charTimer = setTimeout(()=>setChar('idle'), 1100);
+    }
+
+    function setSpeech(msg) {
+      const el = document.getElementById('wg-speech');
+      if (el) el.textContent = msg;
+    }
+
+    function spawnConfetti(container) {
+      const cols = ['#FFD23F','#F15BB5','#06D6A0','#9B5DE5','#FF6B35','#118AB2','#fff'];
+      for (let i = 0; i < 28; i++) {
+        const c = document.createElement('div');
+        c.style.cssText = `position:absolute;width:${6+Math.random()*6}px;height:${6+Math.random()*6}px;
+          border-radius:${Math.random()>0.5?'50%':'3px'};pointer-events:none;z-index:99;
+          background:${cols[Math.floor(Math.random()*cols.length)]};
+          left:${10+Math.random()*80}%;top:35%;
+          --tx:${(Math.random()-0.5)*260}px;--ty:${-(60+Math.random()*130)}px;
+          animation:wg-confetti ${0.55+Math.random()*0.7}s ease-out ${Math.random()*0.2}s forwards;`;
+        container.appendChild(c);
+        setTimeout(()=>c.remove(), 1500);
+      }
+    }
+
+    function getOptions(correct) {
+      const others = shuffle(LEVEL1.filter(w=>w!==correct)).slice(0,3);
+      return shuffle([correct,...others]);
+    }
+
+    function bSize(w) { return w.length>9?'112px':w.length>5?'126px':'140px'; }
+    function bFont(w)  { return w.length>9?'0.9rem':w.length>6?'1.15rem':w.length>4?'1.4rem':'1.75rem'; }
+
+    // ── SCREENS ──────────────────────────────────────────
+    function showStart() {
+      wrap.innerHTML = `
+        <div class="wg-screen" style="text-align:center;">
+          <div style="font-size:3.5rem;margin-bottom:0.2rem;">📚</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:2rem;color:#FFD23F;margin-bottom:0.3rem;">Trick Word Blaster!</div>
+          <div style="display:flex;align-items:flex-end;justify-content:center;gap:1rem;margin:1rem 0 1.2rem;">
+            <div style="position:relative;display:inline-block;">
+              <img src="1773617334845.png" class="wg-char-idle" id="wg-char-title" style="width:90px;display:block;"alt="N"/>
+              <div style="position:absolute;top:-8px;left:93px;background:white;color:#333;font-family:'Fredoka One',cursive;font-size:0.82rem;padding:0.35rem 0.8rem;border-radius:12px;white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,0.25);">
+                Let's blast some words! 🚀
+                <div style="position:absolute;left:-8px;top:50%;transform:translateY(-50%);border:5px solid transparent;border-right-color:white;"></div>
+              </div>
+            </div>
+          </div>
+          <div style="color:rgba(255,255,255,0.65);font-weight:700;font-size:0.9rem;margin-bottom:1.4rem;">
+            🔊 Listen to the word • Find it in the bubbles • Get it right to move on!
+          </div>
+          <button class="wg-lvl-btn" data-wg-action="start"
+            style="background:linear-gradient(135deg,#9B5DE5,#F15BB5);font-size:1.4rem;padding:1.2rem 3rem;">
+            <div style="font-size:2.5rem;margin-bottom:0.3rem;">🚀</div>
+            <div style="font-family:'Fredoka One',cursive;font-size:1.8rem;">START!</div>
+            <div style="font-size:0.8rem;opacity:0.85;margin-top:0.3rem;">${LEVEL1.length} Level 1 words</div>
+          </button>
+          <p style="color:rgba(255,255,255,0.3);font-size:0.72rem;margin-top:1.2rem;">${WORDS_PER_ROUND} words per round · must answer correctly to move on</p>
+        </div>`;
+    }
+
+    function showPlaying() {
+      locked = false;
+      const word    = wordQueue[curIdx];
+      const options = getOptions(word);
+      const prog    = (curIdx / WORDS_PER_ROUND) * 100;
+      const comboTxt = combo >= 3
+        ? `<span style="font-family:'Fredoka One',cursive;color:#FFD23F;font-size:0.85rem;animation:wg-bob1 0.8s ease-in-out infinite;">🔥 ${combo} streak!</span>`
+        : '';
+
+      const bubblesHTML = options.map((opt,i) => {
+        const cfg = BUBBLE_CFG[i];
+        return `<div class="wg-bubble wg-b${i+1} wg-dropping"
+          data-word="${opt}" data-target="${word}"
+          style="width:${bSize(opt)};height:${bSize(opt)};font-size:${bFont(opt)};
+                 background:${cfg.color};
+                 box-shadow:0 9px 0 ${cfg.dark},0 0 32px ${cfg.color}50;
+                 animation-delay:${0.05+i*0.1}s;"
+        >${opt}</div>`;
+      }).join('');
+
+      const charGreeting = combo>=5?'On fire! 🔥':combo>=3?'Great streak! 🌟':curIdx===0?'Let\'s go! 💪':'You\'re doing great!';
+
+      wrap.innerHTML = `
+        <div class="wg-screen" id="wg-play-screen" style="position:relative;overflow:hidden;">
+          <!-- HUD -->
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+            <div style="font-size:1.05rem;">
+              ${Array.from({length:3},(_,i)=>`<span style="font-size:1.1rem;">${i<3-Math.min(3,roundMistakes)?'❤️':'🖤'}</span>`).join('')}
+            </div>
+            <div style="text-align:center;">${comboTxt}</div>
+            <div style="font-family:'Fredoka One',cursive;color:#FFD23F;font-size:0.9rem;">⭐ ${score} &nbsp; ${curIdx+1}/${WORDS_PER_ROUND}</div>
+          </div>
+          <!-- progress bar -->
+          <div style="background:rgba(255,255,255,0.08);border-radius:8px;height:10px;margin-bottom:1rem;overflow:hidden;">
+            <div style="height:100%;border-radius:8px;
+              background:linear-gradient(90deg,#9B5DE5,#F15BB5,#FFD23F);
+              width:${prog}%;transition:width 0.5s;"></div>
+          </div>
+          <!-- character + listen prompt -->
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.1rem;flex-wrap:wrap;justify-content:center;">
+            <!-- N -->
+            <div style="position:relative;flex-shrink:0;">
+              <img src="1773617334845.png" id="wg-char" class="wg-char-idle" style="width:68px;display:block;" alt="N"/>
+              <div id="wg-speech" style="position:absolute;top:-6px;left:72px;background:white;color:#333;
+                font-family:'Fredoka One',cursive;font-size:0.78rem;padding:0.3rem 0.7rem;
+                border-radius:10px;white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,0.22);min-width:110px;">
+                ${charGreeting}
+                <div style="position:absolute;left:-8px;top:50%;transform:translateY(-50%);border:5px solid transparent;border-right-color:white;"></div>
+              </div>
+            </div>
+            <!-- Listen box — word is hidden, child listens and finds the bubble -->
+            <div style="flex:1;min-width:170px;background:rgba(255,255,255,0.07);
+              border:2px solid rgba(255,255,255,0.14);border-radius:14px;padding:0.75rem 1rem;text-align:center;">
+              <div style="color:rgba(255,255,255,0.7);font-size:0.75rem;font-weight:900;letter-spacing:0.08em;margin-bottom:0.5rem;">WHICH BUBBLE MATCHES?</div>
+              <button id="wg-speak-btn" title="Hear the word!"
+                style="background:linear-gradient(135deg,#9B5DE5,#F15BB5);border:none;
+                  border-radius:50px;padding:0.55rem 1.4rem;cursor:pointer;
+                  color:white;font-family:'Fredoka One',cursive;font-size:1.15rem;
+                  box-shadow:0 5px 0 rgba(0,0,0,0.25);transition:transform 0.15s;">
+                🔊 Hear the word!
+              </button>
+              <div style="color:rgba(255,255,255,0.35);font-size:0.62rem;margin-top:0.45rem;">tap to listen again</div>
+            </div>
+          </div>
+          <!-- Bubbles -->
+          <div id="wg-bubbles" style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;min-height:135px;">
+            ${bubblesHTML}
+          </div>
+          <!-- Feedback -->
+          <div id="wg-feedback" style="min-height:2rem;text-align:center;font-family:'Fredoka One',cursive;font-size:1.15rem;margin-top:0.4rem;transition:opacity 0.2s;"></div>
+        </div>`;
+
+      setTimeout(()=>speak(word), 300);
+    }
+
+    function showComplete() {
+      const stars = roundMistakes===0?3:roundMistakes<=4?2:1;
+      const msgs = [
+        'Keep practicing — you\'re learning! 📖',
+        'Nice work! You\'re getting better! 💪',
+        'AMAZING! You\'re a Word Ninja! 🥷',
+      ];
+      const starsHTML = Array.from({length:3},(_,i)=>
+        `<span class="wg-star" style="font-size:3rem;animation-delay:${i*0.2}s;">${i<stars?'⭐':'☆'}</span>`
+      ).join('');
+
+      wrap.innerHTML = `
+        <div class="wg-screen" style="text-align:center;position:relative;overflow:hidden;" id="wg-complete">
+          <div style="margin-bottom:0.4rem;">${starsHTML}</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:2.3rem;color:#FFD23F;margin-bottom:0.3rem;">You did it! 🎉</div>
+          <img src="1773617334845.png" id="wg-char" class="wg-char-celebrate"
+            style="width:100px;margin:0.3rem auto 0.7rem;display:block;
+              filter:drop-shadow(0 4px 22px rgba(255,210,63,0.55));" alt="N"/>
+          <div style="font-size:1.05rem;color:white;font-weight:700;margin-bottom:0.3rem;">${msgs[stars-1]}</div>
+          <div style="font-family:'Fredoka One',cursive;color:#06D6A0;font-size:1.25rem;margin-bottom:1.3rem;">
+            Score: ${score} ⭐ &nbsp;·&nbsp; Mistakes: ${roundMistakes}
+          </div>
+          <div style="display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <button class="wg-act-btn" data-wg-action="replay" style="border-color:#9B5DE5;color:#9B5DE5;">🔄 Play Again</button>
+            <button class="wg-act-btn" data-wg-action="home"   style="border-color:#FFD23F;color:#FFD23F;">🏠 Home</button>
+          </div>
+        </div>`;
+
+      setTimeout(()=>{
+        const s=document.getElementById('wg-complete'); if(s) spawnConfetti(s);
+      }, 250);
+    }
+
+    // ── GAME LOGIC ────────────────────────────────────────
+    function startGame() {
+      wordQueue = shuffle(LEVEL1).slice(0, WORDS_PER_ROUND);
+      curIdx = 0; roundMistakes = 0; score = 0; combo = 0;
+      showPlaying();
+    }
+
+    function handleBubble(bubble) {
+      if (locked) return;
+      const tapped = bubble.dataset.word;
+      const target = bubble.dataset.target;
+      const tw     = document.getElementById('wg-tw');
+      const fb     = document.getElementById('wg-feedback');
+
+      if (tapped === target) {
+        // ✅ CORRECT
+        locked = true;
+        combo++;
+        score += combo >= 3 ? 15 : 10; // bonus for streaks
+        playCorrect();
+        setChar('celebrate');
+        setSpeech(CORRECT_MSGS[Math.floor(Math.random()*CORRECT_MSGS.length)]);
+        bubble.classList.add('wg-popping');
+        bubble.style.background = '#06D6A0';
+        if (tw) tw.style.color = '#06D6A0';
+        if (fb) { fb.textContent = combo>=3?`🔥 ${combo} in a row! +15`:CORRECT_MSGS[Math.floor(Math.random()*CORRECT_MSGS.length)]; fb.style.color='#06D6A0'; }
+        const screen = document.getElementById('wg-play-screen');
+        if (screen) spawnConfetti(screen);
+        setTimeout(()=>{
+          curIdx++;
+          curIdx >= WORDS_PER_ROUND ? showComplete() : showPlaying();
+        }, 900);
+
+      } else {
+        // ❌ WRONG — stay on same word, must get it right
+        roundMistakes++;
+        combo = 0;
+        playWrong();
+        setChar('wrong');
+        setSpeech(WRONG_MSGS[Math.floor(Math.random()*WRONG_MSGS.length)]);
+        bubble.classList.remove('wg-shaking'); void bubble.offsetWidth;
+        bubble.classList.add('wg-shaking');
+        const origBg = bubble.style.background;
+        bubble.style.background = '#EF233C';
+        if (tw) { tw.style.color='#EF233C'; setTimeout(()=>{ if(tw) tw.style.color='#FFD23F'; },500); }
+        if (fb) { fb.textContent='❌ Try again! You must find the right one!'; fb.style.color='#EF233C'; setTimeout(()=>{ if(fb) fb.textContent=''; },1400); }
+        setTimeout(()=>speak(target), 280);
+        setTimeout(()=>{ bubble.classList.remove('wg-shaking'); bubble.style.background=origBg; }, 500);
+      }
+    }
+
+    // ── DELEGATED EVENTS ─────────────────────────────────
+    wrap.addEventListener('click', e => {
+      const bubble  = e.target.closest('.wg-bubble');    if (bubble)  { handleBubble(bubble); return; }
+      const speakB  = e.target.closest('#wg-speak-btn');  if (speakB)  { speak(wordQueue[curIdx]); speakB.style.transform='scale(0.86)'; setTimeout(()=>speakB.style.transform='',180); return; }
+      const actBtn  = e.target.closest('[data-wg-action]');
+      if (actBtn) {
+        const a = actBtn.dataset.wgAction;
+        if (a==='start'||a==='replay') startGame();
+        else if (a==='home') showStart();
+      }
+    });
+
+    // ── INIT ─────────────────────────────────────────────
+    showStart();
+  })();
+  </script>
+
+</body>
+</html>
