@@ -165,6 +165,8 @@
     .card-crunch  { background: linear-gradient(135deg, #118AB2, #06D6A0); }
     .card-lol     { background: linear-gradient(135deg, #FFD23F, #FF6B35); }
     .card-sister  { background: linear-gradient(135deg, #F15BB5, #FFD23F); }
+    .card-climb   { background: linear-gradient(135deg, #0f172a, #1e3a5f); }
+    .card-climb h2, .card-climb p { color: #06D6A0; }
 
     /* FUN FACTS BANNER */
     .banner {
@@ -557,6 +559,22 @@
       .game-hint { display: none; }
     }
 
+    /* ── Climb Game Controls ── */
+    #climb-controls {
+      display: none;
+      justify-content: center;
+      margin-top: 0.8rem;
+    }
+    #climb-dpad {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    @media (hover: none) and (pointer: coarse) {
+      #climb-controls { display: flex; }
+    }
+
   </style>
 </head>
 <body>
@@ -624,6 +642,12 @@
       <p>The BEST sister in the universe! Together they are unstoppable! 💛💛💛</p>
     </div>
 
+    <div class="card card-climb" onclick="spawnEmoji('🏙️')">
+      <span class="emoji">🧗</span>
+      <h2>SKYSCRAPER SCRAMBLE!</h2>
+      <p>Jump between window ledges and CLIMB to the rooftop! Don't fall — and dodge the pigeons! 🐦🏆</p>
+    </div>
+
   </div>
 
   <!-- BIKE GAME -->
@@ -682,6 +706,25 @@
           <button class="dpad-btn" id="nc-right" aria-label="Right">▶</button>
         </div>
         <button class="dpad-btn" id="nc-down"  aria-label="Down">▼</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLIMB GAME -->
+  <section class="game-section" style="margin-top:0; max-width:460px;">
+    <h2 class="game-title" style="color:#06D6A0; text-shadow:2px 2px 0 #000;">🏙️ SKYSCRAPER SCRAMBLE!</h2>
+    <p class="game-sub">Jump between ledges and climb to the ROOFTOP! 🏆</p>
+    <div class="game-wrap" style="border-color:#06D6A0; background:#09132a;">
+      <canvas id="climbCanvas" width="400" height="560" style="display:block;width:100%;height:auto;touch-action:none;"></canvas>
+    </div>
+    <p class="game-hint">← → to move &nbsp;|&nbsp; SPACE to jump &nbsp;|&nbsp; Orange ledges crumble! 🟠</p>
+    <div id="climb-controls">
+      <div id="climb-dpad">
+        <div class="dpad-row">
+          <button class="dpad-btn" id="cc-left"  aria-label="Left"  style="border-color:#06D6A0;color:#06D6A0;">◀</button>
+          <button class="dpad-btn dpad-center"   id="cc-jump"  aria-label="Jump" style="border-color:#06D6A0;background:rgba(6,214,160,0.2);color:#06D6A0;">JUMP!</button>
+          <button class="dpad-btn" id="cc-right" aria-label="Right" style="border-color:#06D6A0;color:#06D6A0;">▶</button>
+        </div>
       </div>
     </div>
   </section>
@@ -2113,6 +2156,374 @@
 
     // ── INIT ─────────────────────────────────────────────
     showStart();
+  })();
+  </script>
+
+  <!-- ===== CLIMB GAME ===== -->
+  <script>
+  (function() {
+    const canvas = document.getElementById('climbCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width;   // 400
+    const H = canvas.height;  // 560
+
+    const GRAVITY  = 0.48;
+    const JUMP_V   = -12.5;
+    const MOVE_SP  = 3.6;
+    const WORLD_H  = 7500;
+
+    let state = 'start';
+    let starsCollected = 0;
+    let highScore = +localStorage.getItem('nClimbHi') || 0;
+    let camTop = WORLD_H - H;
+    let gf = 0; // game frame counter
+
+    const P = { x: W/2-16, y: WORLD_H-90, w: 32, h: 40, vx: 0, vy: 0, onGround: false, facing: 1 };
+
+    let platforms = [], stars = [], birds = [];
+
+    // ── INPUT ──
+    const keys = {};
+    canvas.setAttribute('tabindex', '0');
+    canvas.addEventListener('keydown', e => {
+      e.preventDefault();
+      keys[e.code] = true;
+      if ((e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') && state !== 'playing') startGame();
+    });
+    canvas.addEventListener('keyup',  e => { keys[e.code] = false; });
+    canvas.addEventListener('click',  () => {
+      canvas.focus();
+      if (state !== 'playing') { startGame(); return; }
+      if (P.onGround) { P.vy = JUMP_V; P.onGround = false; }
+    });
+    canvas.addEventListener('touchstart', e => {
+      e.preventDefault();
+      if (state !== 'playing') { startGame(); return; }
+      if (P.onGround) { P.vy = JUMP_V; P.onGround = false; }
+    }, { passive: false });
+
+    // ── MOBILE D-PAD ──
+    const dpadMap = { 'cc-left': 'ArrowLeft', 'cc-right': 'ArrowRight', 'cc-jump': 'Space' };
+    Object.entries(dpadMap).forEach(([id, code]) => {
+      const btn = document.getElementById(id);
+      if (!btn) return;
+      const press   = e => { e.preventDefault(); keys[code] = true;  btn.classList.add('pressed'); };
+      const release = e => { e.preventDefault(); keys[code] = false; btn.classList.remove('pressed'); };
+      btn.addEventListener('touchstart',  press,   { passive: false });
+      btn.addEventListener('touchend',    release, { passive: false });
+      btn.addEventListener('touchcancel', release, { passive: false });
+      btn.addEventListener('mousedown',   press);
+      btn.addEventListener('mouseup',     release);
+      btn.addEventListener('mouseleave',  release);
+    });
+
+    // ── CANVAS SCALING ──
+    function scaleCanvas() {
+      const ratio = Math.min(1, canvas.parentElement.clientWidth / W);
+      canvas.style.width  = (W * ratio) + 'px';
+      canvas.style.height = (H * ratio) + 'px';
+    }
+    scaleCanvas();
+    window.addEventListener('resize', scaleCanvas);
+
+    // ── WORLD GENERATION ──
+    function buildWorld() {
+      platforms = []; stars = []; birds = [];
+      // Starting platform
+      platforms.push({ x: W/2-80, y: WORLD_H-60, w: 160, h: 12, type: 'solid', shakeTimer: 0, falling: false, fy: 0 });
+      let y = WORLD_H - 160, i = 0;
+      while (y > 360) {
+        const w   = 68 + Math.random() * 52;
+        const x   = 15 + Math.random() * (W - w - 30);
+        const typ = (i > 12 && Math.random() < 0.22) ? 'crumble' : 'solid';
+        platforms.push({ x, y, w, h: 12, type: typ, shakeTimer: 0, falling: false, fy: 0 });
+        if (Math.random() < 0.44) {
+          stars.push({ x: x + w * (0.2 + Math.random() * 0.6), y: y - 28, collected: false, phase: Math.random() * Math.PI * 2 });
+        }
+        if (i > 18 && Math.random() < 0.16) {
+          birds.push({ x: x + w/2, y: y - 26, dir: Math.random() < 0.5 ? 1 : -1, spd: 0.7 + Math.random() * 0.7, px: x, pw: w });
+        }
+        y -= 78 + Math.random() * 55;
+        i++;
+      }
+      // Goal platform at the top
+      platforms.push({ x: W/2-110, y: 290, w: 220, h: 12, type: 'goal', shakeTimer: 0, falling: false, fy: 0 });
+    }
+
+    function startGame() {
+      P.x = W/2-16; P.y = WORLD_H-90; P.vx = 0; P.vy = 0; P.onGround = false; P.facing = 1;
+      camTop = WORLD_H - H;
+      starsCollected = 0; gf = 0;
+      buildWorld();
+      state = 'playing';
+    }
+
+    // ── UPDATE ──
+    function update() {
+      if (state !== 'playing') return;
+      gf++;
+      const left  = keys['ArrowLeft']  || keys['KeyA'];
+      const right = keys['ArrowRight'] || keys['KeyD'];
+      const jump  = keys['ArrowUp']    || keys['KeyW'] || keys['Space'];
+
+      if (left)       { P.vx = -MOVE_SP; P.facing = -1; }
+      else if (right) { P.vx =  MOVE_SP; P.facing =  1; }
+      else            { P.vx *= 0.76; }
+
+      if (jump && P.onGround) { P.vy = JUMP_V; P.onGround = false; }
+
+      P.vy = Math.min(P.vy + GRAVITY, 16);
+      const prevY = P.y;
+      P.x += P.vx;
+      P.y += P.vy;
+
+      // Horizontal wrap
+      if (P.x + P.w < 0) P.x = W;
+      if (P.x > W)       P.x = -P.w;
+
+      // Platform collision (only when falling downward)
+      P.onGround = false;
+      for (const pl of platforms) {
+        const plY = pl.y + (pl.falling ? pl.fy : 0);
+        if (P.vy >= 0 &&
+            P.x + P.w > pl.x && P.x < pl.x + pl.w &&
+            P.y + P.h >= plY  && prevY + P.h <= plY + 8) {
+          P.y = plY - P.h;
+          P.vy = 0;
+          P.onGround = true;
+          if (pl.type === 'crumble' && !pl.shakeTimer) pl.shakeTimer = 38;
+          if (pl.type === 'goal') {
+            highScore = Math.max(highScore, starsCollected);
+            localStorage.setItem('nClimbHi', highScore);
+            state = 'win';
+          }
+        }
+      }
+
+      // Crumbling ledges
+      for (const pl of platforms) {
+        if (pl.shakeTimer > 0) { pl.shakeTimer--; if (!pl.shakeTimer) pl.falling = true; }
+        if (pl.falling) pl.fy += 2.8;
+      }
+
+      // Star collection
+      for (const s of stars) {
+        s.phase += 0.055;
+        if (!s.collected && Math.abs(P.x+P.w/2-s.x) < 20 && Math.abs(P.y+P.h/2-s.y) < 22) {
+          s.collected = true;
+          starsCollected++;
+          spawnEmoji('⭐');
+        }
+      }
+
+      // Birds patrol + bump player
+      for (const b of birds) {
+        b.x += b.dir * b.spd;
+        if (b.x < b.px + 8 || b.x > b.px + b.pw - 8) b.dir *= -1;
+        if (Math.abs(P.x+P.w/2-b.x) < 22 && Math.abs(P.y+P.h/2-b.y) < 22) {
+          P.vx += (P.x+P.w/2 > b.x ? 4 : -4);
+          if (P.onGround) P.vy = -5;
+        }
+      }
+
+      // Camera — keep player near upper 38% of screen
+      const target = P.y - H * 0.38;
+      if (target < camTop) camTop += (target - camTop) * 0.14;
+      camTop = Math.min(camTop, WORLD_H - H);
+
+      // Death: fell off bottom of screen
+      if (P.y - camTop > H + 80) {
+        highScore = Math.max(highScore, starsCollected);
+        localStorage.setItem('nClimbHi', highScore);
+        state = 'dead';
+      }
+    }
+
+    // ── DRAW ──
+    const BLDG_COLS = ['#090e1c', '#0a1322', '#0b1728', '#08111e', '#0d1a2e'];
+    function lerp(a, b, t) { return a + (b-a)*t; }
+
+    function draw() {
+      const prog = Math.max(0, Math.min(1, 1 - camTop / (WORLD_H - H)));
+
+      // Sky gradient — gets deeper blue as you climb
+      const sg = ctx.createLinearGradient(0, 0, 0, H);
+      sg.addColorStop(0, `rgb(${lerp(12,4,prog)|0},${lerp(8,14,prog)|0},${lerp(40,80,prog)|0})`);
+      sg.addColorStop(1, `rgb(${lerp(22,8,prog)|0},${lerp(14,24,prog)|0},${lerp(58,110,prog)|0})`);
+      ctx.fillStyle = sg;
+      ctx.fillRect(0, 0, W, H);
+
+      // Background stars appear at height
+      if (prog > 0.2) {
+        const alpha = Math.min(1, (prog - 0.2) * 1.5);
+        for (let i = 0; i < 28; i++) {
+          ctx.beginPath();
+          ctx.arc((i*97+40)%W, (i*61+20)%(H*0.7), 1+(i%3===0?1.5:0.5), 0, 6.28);
+          ctx.fillStyle = `rgba(255,255,255,${alpha*(0.4+(i%4)*0.12)})`;
+          ctx.fill();
+        }
+      }
+
+      // Building panels with windows
+      const bW = W / 5;
+      for (let col = 0; col < 5; col++) {
+        ctx.fillStyle = BLDG_COLS[col];
+        ctx.fillRect(col*bW, 0, bW-2, H);
+        for (let wy = 10; wy < H; wy += 34) {
+          for (let wx = col*bW+9; wx < (col+1)*bW-14; wx += 26) {
+            const worldY = wy + camTop;
+            const h = (((wx*1597 + worldY*1103) ^ (wx>>2)) >>> 0) % 7;
+            ctx.fillStyle = h > 1 ? (h > 4 ? '#c8e8ff' : '#ffe87a') : '#050c18';
+            ctx.fillRect(wx, wy, 14, 20);
+          }
+        }
+      }
+
+      // Platforms
+      for (const pl of platforms) {
+        const fy = pl.falling ? pl.fy : 0;
+        const sy = pl.y + fy - camTop;
+        if (sy < -20 || sy > H + 50) continue;
+        const shake = pl.shakeTimer > 0 ? Math.sin(gf*1.2)*(1-pl.shakeTimer/38)*2 : 0;
+        const dx = pl.type === 'crumble' ? shake : 0;
+        let top, body;
+        if      (pl.type === 'goal')   { top = '#FFD700'; body = '#9a7000'; }
+        else if (pl.type === 'crumble'){ top = pl.shakeTimer ? '#FF6B35' : '#cd8b32'; body = '#7a4800'; }
+        else                           { top = '#4ade80';  body = '#166534'; }
+        ctx.fillStyle = body;
+        ctx.fillRect(pl.x+dx, sy+4, pl.w, pl.h-4);
+        ctx.fillStyle = top;
+        ctx.fillRect(pl.x+dx, sy, pl.w, 5);
+        if (pl.type === 'goal') {
+          // Flag pole + flag
+          ctx.fillStyle = '#FF6B35';
+          ctx.fillRect(pl.x+pl.w/2-2, sy-34, 3, 35);
+          ctx.fillStyle = '#EF233C';
+          ctx.beginPath();
+          ctx.moveTo(pl.x+pl.w/2+1, sy-34);
+          ctx.lineTo(pl.x+pl.w/2+24, sy-23);
+          ctx.lineTo(pl.x+pl.w/2+1, sy-13);
+          ctx.fill();
+          ctx.fillStyle = 'white';
+          ctx.font = 'bold 12px Nunito, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('ROOF! 🏆', pl.x+pl.w/2+12, sy-40);
+        }
+      }
+
+      // Stars
+      ctx.font = '18px serif';
+      ctx.textAlign = 'center';
+      for (const s of stars) {
+        if (s.collected) continue;
+        const sy = s.y + Math.sin(s.phase)*4 - camTop;
+        if (sy < -20 || sy > H+20) continue;
+        ctx.fillText('⭐', s.x, sy);
+      }
+
+      // Birds
+      for (const b of birds) {
+        const sy = b.y - camTop;
+        if (sy < -20 || sy > H+20) continue;
+        ctx.save();
+        ctx.translate(b.x, sy);
+        if (b.dir > 0) ctx.scale(-1, 1);
+        ctx.font = '20px serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('🐦', 0, 0);
+        ctx.restore();
+      }
+
+      // Player
+      ctx.save();
+      ctx.translate(P.x+P.w/2, P.y-camTop+P.h);
+      if (P.facing === -1) ctx.scale(-1, 1);
+      ctx.font = '38px serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('🧗', 0, 0);
+      ctx.restore();
+
+      // HUD bar
+      ctx.fillStyle = 'rgba(0,0,0,0.52)';
+      ctx.fillRect(0, 0, W, 40);
+      ctx.fillStyle = '#FFD23F';
+      ctx.font = 'bold 14px Nunito, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(`⭐ ${starsCollected}`, 10, 26);
+      ctx.textAlign = 'right';
+      ctx.fillText(`Best ⭐ ${highScore}`, W-26, 26);
+
+      // Climb progress bar (right edge)
+      const barH = H - 54;
+      ctx.fillStyle = 'rgba(255,255,255,0.12)';
+      ctx.fillRect(W-17, 44, 10, barH);
+      ctx.fillStyle = '#06D6A0';
+      const filled = barH * prog;
+      ctx.fillRect(W-17, 44+barH-filled, 10, filled);
+      ctx.font = '11px serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('🏆', W-12, 42);
+
+      // ── SCREENS ──
+      if (state === 'start') {
+        ctx.fillStyle = 'rgba(0,0,0,0.80)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#FFD23F';
+        ctx.font = 'bold 24px Fredoka One, cursive';
+        ctx.fillText('🏙️ SKYSCRAPER SCRAMBLE!', W/2, H/2-110);
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 14px Nunito, sans-serif';
+        ctx.fillText('Jump between window ledges', W/2, H/2-74);
+        ctx.fillText('and CLIMB to the ROOFTOP! 🏆', W/2, H/2-52);
+        ctx.fillText('← → to move   •   SPACE to jump', W/2, H/2-22);
+        ctx.fillStyle = '#FF6B35';
+        ctx.fillText('🟠 Orange ledges crumble — jump fast!', W/2, H/2+8);
+        ctx.fillStyle = '#aaa';
+        ctx.fillText('🐦 Watch out for pigeons!', W/2, H/2+34);
+        ctx.fillStyle = '#06D6A0';
+        ctx.font = 'bold 20px Fredoka One, cursive';
+        ctx.fillText('Tap or press SPACE to start!', W/2, H/2+80);
+      } else if (state === 'dead') {
+        ctx.fillStyle = 'rgba(0,0,0,0.80)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#EF233C';
+        ctx.font = 'bold 36px Fredoka One, cursive';
+        ctx.fillText('OH NO! 😱', W/2, H/2-80);
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 16px Nunito, sans-serif';
+        ctx.fillText('You fell off the building!', W/2, H/2-44);
+        ctx.fillText(`Stars collected: ⭐ ${starsCollected}`, W/2, H/2-12);
+        ctx.fillText(`Best: ⭐ ${highScore}`, W/2, H/2+20);
+        ctx.fillStyle = '#06D6A0';
+        ctx.font = 'bold 20px Fredoka One, cursive';
+        ctx.fillText('Tap / SPACE to try again!', W/2, H/2+70);
+      } else if (state === 'win') {
+        ctx.fillStyle = 'rgba(0,0,0,0.80)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#FFD23F';
+        ctx.font = 'bold 26px Fredoka One, cursive';
+        ctx.fillText('YOU REACHED THE TOP! 🏆', W/2, H/2-96);
+        ctx.fillStyle = '#06D6A0';
+        ctx.font = 'bold 22px Fredoka One, cursive';
+        ctx.fillText('NINJA CLIMBER! 🥷✨', W/2, H/2-58);
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 16px Nunito, sans-serif';
+        ctx.fillText(`Stars: ⭐ ${starsCollected}`, W/2, H/2-18);
+        ctx.fillText(`Best: ⭐ ${highScore}`, W/2, H/2+16);
+        ctx.fillStyle = '#FFD23F';
+        ctx.font = 'bold 20px Fredoka One, cursive';
+        ctx.fillText('Tap / SPACE to play again!', W/2, H/2+72);
+        if (gf % 7 === 0) spawnEmoji(['🎉','⭐','🏆','🥷','🎊'][(gf/7|0)%5]);
+      }
+    }
+
+    function gameLoop() { update(); draw(); requestAnimationFrame(gameLoop); }
+    buildWorld();
+    gameLoop();
   })();
   </script>
 
